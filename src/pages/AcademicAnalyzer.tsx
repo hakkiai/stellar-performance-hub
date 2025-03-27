@@ -7,10 +7,6 @@ import CSVEditor from '../components/CSVEditor';
 const AcademicAnalyzer = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   
-  const handleLoginSuccess = () => {
-    setIsLoggedIn(true);
-  };
-
   return (
     <div className="min-h-screen bg-space-gradient pb-20">
       <Navbar />
@@ -30,7 +26,13 @@ const AcademicAnalyzer = () => {
         
         <div className="max-w-4xl mx-auto">
           {!isLoggedIn ? (
-            <LoginForm onLoginSuccess={handleLoginSuccess} />
+            <LoginForm onLoginSuccess={(username, password) => {
+              if (username === 'admin' && password === 'admin') {
+                setIsLoggedIn(true);
+                return true;
+              }
+              return false;
+            }} />
           ) : (
             <CSVEditor />
           )}

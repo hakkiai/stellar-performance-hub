@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { User, Lock } from 'lucide-react';
 
 interface LoginFormProps {
-  onLoginSuccess: () => void;
+  onLoginSuccess: (username: string, password: string) => boolean;
 }
 
 const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
@@ -20,9 +20,10 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
     
     // Simulate network request
     setTimeout(() => {
-      if (username === 'admin' && password === 'admin') {
+      const success = onLoginSuccess(username, password);
+      
+      if (success) {
         toast.success('Login successful!');
-        onLoginSuccess();
       } else {
         toast.error('Invalid credentials. Try username: admin, password: admin');
       }
@@ -33,7 +34,7 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
   return (
     <div className="w-full max-w-md mx-auto">
       <div className="glass-card p-8 rounded-xl">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login to Academic Analyzer</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
@@ -87,7 +88,9 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
           </div>
           
           <div className="text-sm text-center text-muted-foreground">
-            <p>Demo credentials: username: <span className="font-semibold">admin</span>, password: <span className="font-semibold">admin</span></p>
+            <p>Demo credentials:</p>
+            <p>HOD: username: <span className="font-semibold">admin</span>, password: <span className="font-semibold">admin</span></p>
+            <p>Faculty: username: <span className="font-semibold">faculty1</span>, password: <span className="font-semibold">password</span></p>
           </div>
         </form>
       </div>
