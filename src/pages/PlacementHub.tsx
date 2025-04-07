@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -182,7 +181,7 @@ const PlacementHub = () => {
             <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary mb-3">
               Student Access
             </span>
-            <h1 className="text-3xl md:text-5xl font-bold mb-4 cosmic-text">
+            <h1 className="text-3xl md:text-5xl font-bold mb-4 text-primary">
               Campus Placement Hub
             </h1>
             <p className="text-lg max-w-2xl mx-auto text-muted-foreground">
@@ -194,17 +193,52 @@ const PlacementHub = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
+            className="max-w-md mx-auto"
           >
-            <LoginForm 
-              onLoginSuccess={(username, password) => {
-                if (username === 'student' && password === 'password') {
-                  setIsLoggedIn(true);
-                  toast.success('Login successful');
-                  return true;
-                }
-                return false;
-              }} 
-            />
+            <Card className="border border-primary/20 shadow-xl">
+              <CardHeader className="text-center">
+                <CardTitle>Student Login</CardTitle>
+                <CardDescription>
+                  Enter your credentials to access your placement portal
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleLogin} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="username">Username</Label>
+                    <Input 
+                      id="username" 
+                      placeholder="Enter your username" 
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      className="bg-background/60 border-primary/20"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password">Password</Label>
+                    <Input 
+                      id="password" 
+                      type="password" 
+                      placeholder="Enter your password" 
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="bg-background/60 border-primary/20"
+                      required
+                    />
+                  </div>
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-cosmic-500 hover:bg-cosmic-600 text-white"
+                  >
+                    Login
+                  </Button>
+                  <p className="text-xs text-center text-muted-foreground mt-2">
+                    Demo credentials: username: student, password: password
+                  </p>
+                </form>
+              </CardContent>
+            </Card>
           </motion.div>
           
           <motion.div

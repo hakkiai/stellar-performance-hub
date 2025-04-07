@@ -103,15 +103,7 @@
   }
   
   .stellar-btn {
-    @apply relative overflow-hidden bg-gradient-to-r from-space-500 to-cosmic-600 text-white font-medium rounded-lg px-5 py-2.5 
-           before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-gradient-to-r 
-           before:from-cosmic-400 before:to-space-500 before:translate-x-full before:transition-transform 
-           before:duration-300 before:ease-in-out hover:before:translate-x-0
-           before:opacity-0 hover:before:opacity-100 before:rounded-lg;
-  }
-  
-  .stellar-btn > span {
-    @apply relative z-10;
+    @apply relative bg-gradient-to-r from-space-500 to-cosmic-600 text-white font-medium rounded-lg px-5 py-2.5;
   }
   
   .nav-link {
@@ -122,22 +114,13 @@
   }
   
   .cosmic-border {
-    @apply border border-white/10 shadow-[0_0_15px_rgba(120,120,255,0.15)];
+    @apply border border-white/20 shadow-lg;
   }
   
   .cosmic-card {
-    @apply bg-secondary/5 backdrop-blur-md border border-white/5 rounded-xl 
-           shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]
+    @apply bg-secondary/5 backdrop-blur-md border border-white/10 rounded-xl 
+           shadow-lg hover:shadow-xl
            transition-all duration-300 hover:-translate-y-1;
-  }
-  
-  .star {
-    @apply absolute rounded-full;
-    animation: twinkle 5s infinite ease-in-out;
-  }
-  
-  .planet {
-    @apply absolute rounded-full backdrop-blur-sm;
   }
 }
 
@@ -151,11 +134,6 @@
 
 .light-mode .glass-card {
   @apply bg-white/80 backdrop-blur-md border border-black/5 shadow-lg;
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 1; }
 }
 
 @keyframes float {
@@ -173,18 +151,6 @@
   to { transform: rotate(360deg); }
 }
 
-@keyframes scroll-down {
-  0% { transform: translateY(0); opacity: 0; }
-  30% { opacity: 1; }
-  60% { opacity: 1; }
-  100% { transform: translateY(8px); opacity: 0; }
-}
-
-@keyframes background-pan {
-  from { background-position: 0% center; }
-  to { background-position: -200% center; }
-}
-
 .animate-float-slow {
   animation: float 6s ease-in-out infinite;
 }
@@ -199,25 +165,4 @@
 
 .animate-spin-slow {
   animation: spin-slow 1s ease-in-out;
-}
-
-.animate-scroll-down {
-  animation: scroll-down 2s infinite;
-}
-
-.animate-background-pan {
-  animation: background-pan 3s linear infinite;
-}
-
-.cosmic-text {
-  background: linear-gradient(
-    to right,
-    #e2e8f0,
-    #ffffff,
-    #e2e8f0
-  );
-  background-size: 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: background-pan 3s linear infinite;
 }

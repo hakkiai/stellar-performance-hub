@@ -42,7 +42,7 @@ const Index = () => {
           <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary mb-3">
             Analysis Tools
           </span>
-          <h2 className="text-3xl md:text-5xl font-bold mb-6 cosmic-text">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-primary">
             Advanced Analytics Platform
           </h2>
           <p className="max-w-2xl mx-auto text-lg text-muted-foreground">
@@ -115,27 +115,11 @@ const Index = () => {
         transition={{ duration: 0.8 }}
         className="relative bg-secondary/30 backdrop-blur-sm mt-12 py-10"
       >
-        <div className="absolute inset-0 overflow-hidden opacity-20">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div
-              key={i}
-              className="star"
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                width: `${Math.random() * 2 + 1}px`,
-                height: `${Math.random() * 2 + 1}px`,
-                animationDelay: `${Math.random() * 5}s`,
-              }}
-            />
-          ))}
-        </div>
-        
         <div className="container mx-auto px-4 text-center relative z-10">
           <img
             src="https://www.idealtech.edu.in/website/assets/images/ideal_logo.jpg"
             alt="Ideal Institute of Technology"
-            className="h-14 w-auto mx-auto mb-6 rounded-lg cosmic-border"
+            className="h-14 w-auto mx-auto mb-6 rounded-lg border-2 border-white"
           />
           
           <div className="flex justify-center space-x-6 mb-6">
