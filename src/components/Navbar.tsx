@@ -1,12 +1,18 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Settings } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
+import AdminLoginModal from './AdminLoginModal';
+import { useNavigate } from 'react-router-dom';
+import { toast } from "sonner";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showAdminModal, setShowAdminModal] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -26,6 +32,16 @@ const Navbar = () => {
   useEffect(() => {
     setIsOpen(false);
   }, [location.pathname]);
+  
+  const handleAdminLogin = () => {
+    toast.success("Admin login successful!", {
+      description: "Redirecting to admin dashboard..."
+    });
+    
+    setTimeout(() => {
+      navigate('/admin-dashboard');
+    }, 1000);
+  };
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-background/80 backdrop-blur-lg shadow-md' : 'bg-transparent'}`}>
@@ -42,20 +58,40 @@ const Navbar = () => {
             </span>
           </Link>
 
-          <div className="hidden md:flex space-x-6">
+          <div className="hidden md:flex items-center space-x-6">
             <Link to="/" className="nav-link">Home</Link>
             <Link to="/academic-analyzer" className="nav-link">Academic Analyzer</Link>
             <Link to="/placement-hub" className="nav-link">Placement Hub</Link>
             <Link to="/training-analyzer" className="nav-link">Training Analyzer</Link>
+            <ThemeToggle />
+            <button
+              onClick={() => setShowAdminModal(true)}
+              className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary/20 transition-colors"
+              aria-label="Admin Settings"
+              title="Admin Access"
+            >
+              <Settings size={18} />
+            </button>
           </div>
 
-          <button 
-            onClick={toggleMenu} 
-            className="md:hidden text-foreground focus:outline-none"
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="md:hidden flex items-center space-x-3">
+            <ThemeToggle />
+            <button
+              onClick={() => setShowAdminModal(true)}
+              className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary/20 transition-colors"
+              aria-label="Admin Settings"
+              title="Admin Access"
+            >
+              <Settings size={18} />
+            </button>
+            <button 
+              onClick={toggleMenu} 
+              className="text-foreground focus:outline-none"
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -68,6 +104,12 @@ const Navbar = () => {
           <Link to="/training-analyzer" className="nav-link py-3">Training Analyzer</Link>
         </div>
       </div>
+      
+      <AdminLoginModal 
+        isOpen={showAdminModal}
+        onClose={() => setShowAdminModal(false)}
+        onLoginSuccess={handleAdminLogin}
+      />
     </nav>
   );
 };
