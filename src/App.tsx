@@ -8,6 +8,7 @@ import { ThemeProvider } from "./components/ThemeProvider";
 import Index from "./pages/Index";
 import AcademicAnalyzer from "./pages/AcademicAnalyzer";
 import TrainingAnalyzer from "./pages/TrainingAnalyzer";
+import PlacementHub from "./pages/PlacementHub";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
@@ -23,7 +24,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/academic-analyzer" element={<AcademicAnalyzer />} />
-            <Route path="/placement-hub" element={<AcademicAnalyzer />} /> {/* Placeholder - would be replaced with actual PlacementHub component */}
+            <Route path="/placement-hub" element={<PlacementHub />} />
             <Route path="/training-analyzer" element={<TrainingAnalyzer />} />
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />

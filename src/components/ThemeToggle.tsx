@@ -14,7 +14,7 @@ const ThemeToggle = () => {
       aria-label="Toggle theme"
       className="rounded-full bg-secondary/20 hover:bg-secondary/40 transition-colors"
     >
-      {theme === 'dark' ? <Moon size={18} /> : <Sun size={18} />}
+      {theme === 'dark' ? <Moon size={18} className="text-primary" /> : <Sun size={18} className="text-primary" />}
       <span className="sr-only md:not-sr-only md:ml-2">
         {theme === 'dark' ? 'Dark' : 'Light'}
       </span>

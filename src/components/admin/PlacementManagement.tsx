@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { PlusCircle, Edit, Trash, BriefcaseBusiness, Send, Users } from 'lucide-react';
+import { PlusCircle, Edit, Trash, BriefcaseBusiness, Send, Users, Filter } from 'lucide-react';
 import { toast } from "sonner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { format } from "date-fns";
@@ -56,7 +56,7 @@ const initialApplications = [
     branch: 'CSE', 
     company: 'TechCorp', 
     applyDate: new Date('2025-03-20'), 
-    status: 'Pending' 
+    status: 'Applied' 
   },
   { 
     id: '2', 
@@ -107,6 +107,9 @@ const PlacementManagement = () => {
   const [applications, setApplications] = useState(initialApplications);
   const [showJobForm, setShowJobForm] = useState(false);
   const [applicationFilter, setApplicationFilter] = useState("all");
+  const [branchFilter, setBranchFilter] = useState("all");
+  const [companyFilter, setCompanyFilter] = useState("all");
+  const [yearFilter, setYearFilter] = useState("all");
   
   // Job form state
   const [jobFormData, setJobFormData] = useState<JobFormData>({
@@ -121,6 +124,19 @@ const PlacementManagement = () => {
   
   const [editJobId, setEditJobId] = useState<string | null>(null);
   const [selectedCompanyForNotification, setSelectedCompanyForNotification] = useState('');
+
+  // Extract unique company names and branches for filters
+  const uniqueCompanies = [...new Set(applications.map(app => app.company))];
+  const uniqueBranches = [...new Set(applications.map(app => app.branch))];
+
+  // Helper to determine student year from roll number
+  const getStudentYear = (rollNumber: string) => {
+    if (rollNumber.startsWith('216K1A05')) return '4th';
+    if (rollNumber.startsWith('226K1A05')) return '3rd';
+    if (rollNumber.startsWith('236K1A05')) return '2nd';
+    if (rollNumber.startsWith('246K1A05')) return '1st';
+    return 'Unknown';
+  };
 
   // Handle job form input changes
   const handleJobFormChange = (field: keyof JobFormData, value: any) => {
@@ -199,10 +215,16 @@ const PlacementManagement = () => {
     toast.success("Application status updated");
   };
 
-  // Filter applications based on status
-  const filteredApplications = applicationFilter === "all" 
-    ? applications 
-    : applications.filter(app => app.status.toLowerCase() === applicationFilter.toLowerCase());
+  // Filter applications based on multiple criteria
+  const filteredApplications = applications.filter(app => {
+    const matchesStatus = applicationFilter === "all" || app.status.toLowerCase() === applicationFilter.toLowerCase();
+    const matchesBranch = branchFilter === "all" || app.branch === branchFilter;
+    const matchesCompany = companyFilter === "all" || app.company === companyFilter;
+    const studentYear = getStudentYear(app.rollNumber);
+    const matchesYear = yearFilter === "all" || studentYear === yearFilter;
+    
+    return matchesStatus && matchesBranch && matchesCompany && matchesYear;
+  });
 
   return (
     <div className="space-y-6">
@@ -459,35 +481,88 @@ const PlacementManagement = () => {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h3 className="text-lg font-medium">Student Applications</h3>
             
-            <div className="flex flex-wrap gap-2">
-              <Button 
-                variant={applicationFilter === "all" ? "default" : "outline"} 
-                size="sm"
-                onClick={() => setApplicationFilter("all")}
-              >
-                All
-              </Button>
-              <Button 
-                variant={applicationFilter === "pending" ? "default" : "outline"} 
-                size="sm"
-                onClick={() => setApplicationFilter("pending")}
-              >
-                Pending
-              </Button>
-              <Button 
-                variant={applicationFilter === "shortlisted" ? "default" : "outline"} 
-                size="sm"
-                onClick={() => setApplicationFilter("shortlisted")}
-              >
-                Shortlisted
-              </Button>
-              <Button 
-                variant={applicationFilter === "rejected" ? "default" : "outline"} 
-                size="sm"
-                onClick={() => setApplicationFilter("rejected")}
-              >
-                Rejected
-              </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex items-center gap-2"
+              onClick={() => {
+                // Reset all filters
+                setApplicationFilter("all");
+                setBranchFilter("all");
+                setCompanyFilter("all");
+                setYearFilter("all");
+              }}
+            >
+              <Filter size={16} />
+              Reset Filters
+            </Button>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+            {/* Status Filter */}
+            <div>
+              <Label htmlFor="statusFilter" className="mb-2 block">Status</Label>
+              <Select value={applicationFilter} onValueChange={setApplicationFilter}>
+                <SelectTrigger id="statusFilter">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="applied">Applied</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="shortlisted">Shortlisted</SelectItem>
+                  <SelectItem value="rejected">Rejected</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            {/* Branch Filter */}
+            <div>
+              <Label htmlFor="branchFilter" className="mb-2 block">Branch</Label>
+              <Select value={branchFilter} onValueChange={setBranchFilter}>
+                <SelectTrigger id="branchFilter">
+                  <SelectValue placeholder="Filter by branch" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Branches</SelectItem>
+                  {uniqueBranches.map(branch => (
+                    <SelectItem key={branch} value={branch}>{branch}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            {/* Company Filter */}
+            <div>
+              <Label htmlFor="companyFilter" className="mb-2 block">Company</Label>
+              <Select value={companyFilter} onValueChange={setCompanyFilter}>
+                <SelectTrigger id="companyFilter">
+                  <SelectValue placeholder="Filter by company" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Companies</SelectItem>
+                  {uniqueCompanies.map(company => (
+                    <SelectItem key={company} value={company}>{company}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            {/* Year Filter */}
+            <div>
+              <Label htmlFor="yearFilter" className="mb-2 block">Year</Label>
+              <Select value={yearFilter} onValueChange={setYearFilter}>
+                <SelectTrigger id="yearFilter">
+                  <SelectValue placeholder="Filter by year" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Years</SelectItem>
+                  <SelectItem value="1st">1st Year</SelectItem>
+                  <SelectItem value="2nd">2nd Year</SelectItem>
+                  <SelectItem value="3rd">3rd Year</SelectItem>
+                  <SelectItem value="4th">4th Year</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           
@@ -496,6 +571,7 @@ const PlacementManagement = () => {
               <TableRow>
                 <TableHead>Roll Number</TableHead>
                 <TableHead>Name</TableHead>
+                <TableHead>Year</TableHead>
                 <TableHead>Company</TableHead>
                 <TableHead>Apply Date</TableHead>
                 <TableHead>Status</TableHead>
@@ -503,47 +579,58 @@ const PlacementManagement = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredApplications.map((app) => (
-                <TableRow key={app.id}>
-                  <TableCell className="font-medium">{app.rollNumber}</TableCell>
-                  <TableCell>
-                    <div>
-                      <p>{app.name}</p>
-                      <p className="text-xs text-muted-foreground">{app.branch} | {app.email}</p>
-                    </div>
-                  </TableCell>
-                  <TableCell>{app.company}</TableCell>
-                  <TableCell>{
-                    app.applyDate instanceof Date 
-                      ? format(app.applyDate, 'dd MMM yyyy')
-                      : 'Invalid date'
-                  }</TableCell>
-                  <TableCell>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      app.status === 'Pending' ? 'bg-yellow-500/20 text-yellow-600' :
-                      app.status === 'Shortlisted' ? 'bg-green-500/20 text-green-600' :
-                      'bg-red-500/20 text-red-600'
-                    }`}>
-                      {app.status}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <Select
-                      value={app.status.toLowerCase()}
-                      onValueChange={(value) => handleUpdateStatus(app.id, value.charAt(0).toUpperCase() + value.slice(1))}
-                    >
-                      <SelectTrigger className="w-32">
-                        <SelectValue placeholder="Update Status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="shortlisted">Shortlisted</SelectItem>
-                        <SelectItem value="rejected">Rejected</SelectItem>
-                      </SelectContent>
-                    </Select>
+              {filteredApplications.length > 0 ? (
+                filteredApplications.map((app) => (
+                  <TableRow key={app.id}>
+                    <TableCell className="font-medium">{app.rollNumber}</TableCell>
+                    <TableCell>
+                      <div>
+                        <p>{app.name}</p>
+                        <p className="text-xs text-muted-foreground">{app.branch} | {app.email}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell>{getStudentYear(app.rollNumber)}</TableCell>
+                    <TableCell>{app.company}</TableCell>
+                    <TableCell>{
+                      app.applyDate instanceof Date 
+                        ? format(app.applyDate, 'dd MMM yyyy')
+                        : 'Invalid date'
+                    }</TableCell>
+                    <TableCell>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        app.status === 'Pending' ? 'bg-yellow-500/20 text-yellow-600' :
+                        app.status === 'Applied' ? 'bg-blue-500/20 text-blue-600' :
+                        app.status === 'Shortlisted' ? 'bg-green-500/20 text-green-600' :
+                        'bg-red-500/20 text-red-600'
+                      }`}>
+                        {app.status}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <Select
+                        value={app.status.toLowerCase()}
+                        onValueChange={(value) => handleUpdateStatus(app.id, value.charAt(0).toUpperCase() + value.slice(1))}
+                      >
+                        <SelectTrigger className="w-32">
+                          <SelectValue placeholder="Update Status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="applied">Applied</SelectItem>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="shortlisted">Shortlisted</SelectItem>
+                          <SelectItem value="rejected">Rejected</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7} className="text-center py-6 text-muted-foreground">
+                    No applications match the current filters
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </TabsContent>

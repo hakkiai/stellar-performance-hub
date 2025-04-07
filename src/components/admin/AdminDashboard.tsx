@@ -5,7 +5,6 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Settings, Users, BookOpen, Activity, School, Briefcase } from 'lucide-react';
 import FacultyManagement from './FacultyManagement';
-import HODManagement from './HODManagement';
 import StudentData from './StudentData';
 import SystemSettings from './SystemSettings';
 import PlacementManagement from './PlacementManagement';
@@ -100,10 +99,6 @@ const AdminDashboard = () => {
             <Users size={16} />
             Faculty
           </TabsTrigger>
-          <TabsTrigger value="hod" className="flex items-center gap-2">
-            <Users size={16} />
-            HOD Management
-          </TabsTrigger>
           <TabsTrigger value="students" className="flex items-center gap-2">
             <School size={16} />
             Student Data
@@ -120,10 +115,6 @@ const AdminDashboard = () => {
         
         <TabsContent value="faculty">
           <FacultyManagement />
-        </TabsContent>
-        
-        <TabsContent value="hod">
-          <HODManagement />
         </TabsContent>
         
         <TabsContent value="students">
