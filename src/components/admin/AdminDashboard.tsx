@@ -3,11 +3,12 @@ import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Settings, Users, BookOpen, Activity, School } from 'lucide-react';
+import { Settings, Users, BookOpen, Activity, School, Briefcase } from 'lucide-react';
 import FacultyManagement from './FacultyManagement';
 import HODManagement from './HODManagement';
 import StudentData from './StudentData';
 import SystemSettings from './SystemSettings';
+import PlacementManagement from './PlacementManagement';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("faculty");
@@ -35,7 +36,7 @@ const AdminDashboard = () => {
         </ToggleGroup>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-secondary/5 backdrop-blur-sm">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg flex items-center">
@@ -77,10 +78,24 @@ const AdminDashboard = () => {
             <p className="text-xs text-muted-foreground">Active subjects</p>
           </CardContent>
         </Card>
+        
+        <Card className="bg-secondary/5 backdrop-blur-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center">
+              <Briefcase className="h-5 w-5 mr-2 text-primary" />
+              Placements
+            </CardTitle>
+            <CardDescription>Job postings</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold">8</p>
+            <p className="text-xs text-muted-foreground">Active job listings</p>
+          </CardContent>
+        </Card>
       </div>
       
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="mb-6 w-full justify-start">
+        <TabsList className="mb-6 w-full justify-start overflow-x-auto">
           <TabsTrigger value="faculty" className="flex items-center gap-2">
             <Users size={16} />
             Faculty
@@ -92,6 +107,10 @@ const AdminDashboard = () => {
           <TabsTrigger value="students" className="flex items-center gap-2">
             <School size={16} />
             Student Data
+          </TabsTrigger>
+          <TabsTrigger value="placement" className="flex items-center gap-2">
+            <Briefcase size={16} />
+            Placement Hub
           </TabsTrigger>
           <TabsTrigger value="settings" className="flex items-center gap-2">
             <Settings size={16} />
@@ -109,6 +128,10 @@ const AdminDashboard = () => {
         
         <TabsContent value="students">
           <StudentData />
+        </TabsContent>
+        
+        <TabsContent value="placement">
+          <PlacementManagement />
         </TabsContent>
         
         <TabsContent value="settings">
