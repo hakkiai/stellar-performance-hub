@@ -13,7 +13,7 @@ interface FacultyDashboardProps {
   facultyUsername: string;
 }
 
-// Mock data for the demo
+// Mock data for the demostration
 const mockStudentData = [
   { id: '1', name: 'John Doe', roll: 'CSE001', performanceLevel: '', feedback: '' },
   { id: '2', name: 'Jane Smith', roll: 'CSE002', performanceLevel: '', feedback: '' },
