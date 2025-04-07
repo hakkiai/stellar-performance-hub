@@ -77,11 +77,29 @@
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+  
+  /* Theme transition */
+  body.theme-transition {
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+  
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-secondary/20;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/20 rounded-full hover:bg-primary/40 transition-colors;
+  }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-secondary/10 backdrop-blur-md border border-white/10 shadow-xl;
+    @apply bg-secondary/10 backdrop-blur-md border border-white/10 shadow-xl transition-all duration-300 hover:shadow-2xl;
   }
   
   .stellar-btn {
@@ -102,6 +120,25 @@
            after:transition-all after:duration-300 after:ease-in-out
            hover:after:w-full;
   }
+  
+  .cosmic-border {
+    @apply border border-white/10 shadow-[0_0_15px_rgba(120,120,255,0.15)];
+  }
+  
+  .cosmic-card {
+    @apply bg-secondary/5 backdrop-blur-md border border-white/5 rounded-xl 
+           shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]
+           transition-all duration-300 hover:-translate-y-1;
+  }
+  
+  .star {
+    @apply absolute rounded-full;
+    animation: twinkle 5s infinite ease-in-out;
+  }
+  
+  .planet {
+    @apply absolute rounded-full backdrop-blur-sm;
+  }
 }
 
 .bg-space-gradient {
@@ -114,4 +151,73 @@
 
 .light-mode .glass-card {
   @apply bg-white/80 backdrop-blur-md border border-black/5 shadow-lg;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes ripple {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes scroll-down {
+  0% { transform: translateY(0); opacity: 0; }
+  30% { opacity: 1; }
+  60% { opacity: 1; }
+  100% { transform: translateY(8px); opacity: 0; }
+}
+
+@keyframes background-pan {
+  from { background-position: 0% center; }
+  to { background-position: -200% center; }
+}
+
+.animate-float-slow {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-ripple {
+  animation: ripple 0.6s linear;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 1s ease-in-out;
+}
+
+.animate-scroll-down {
+  animation: scroll-down 2s infinite;
+}
+
+.animate-background-pan {
+  animation: background-pan 3s linear infinite;
+}
+
+.cosmic-text {
+  background: linear-gradient(
+    to right,
+    #e2e8f0,
+    #ffffff,
+    #e2e8f0
+  );
+  background-size: 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: background-pan 3s linear infinite;
 }
