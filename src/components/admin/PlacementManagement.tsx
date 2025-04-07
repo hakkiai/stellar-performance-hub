@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { PlusCircle, Edit, Trash, BriefcaseBusiness, Send, Users, Filter } from 'lucide-react';
+import { PlusCircle, Edit, Trash, BriefcaseBusiness, Send, Users, Filter, Award } from 'lucide-react';
 import { toast } from "sonner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { format } from "date-fns";

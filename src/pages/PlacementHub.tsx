@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -10,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Briefcase, Calendar, Certificate, ExternalLink, Upload, UserCircle } from 'lucide-react';
+import { Briefcase, Calendar, Award, ExternalLink, Upload, UserCircle } from 'lucide-react';
 import { format } from "date-fns";
 
 const PlacementHub = () => {
@@ -22,7 +21,6 @@ const PlacementHub = () => {
   const [certificates, setCertificates] = useState<{name: string, date: Date}[]>([]);
   const [certName, setCertName] = useState('');
 
-  // Mock student data
   const studentData = {
     name: "Rahul Kumar",
     rollNumber: "216K1A0501",
@@ -31,7 +29,6 @@ const PlacementHub = () => {
     email: "rahul.k@student.ideal.edu"
   };
 
-  // Mock job data
   const availableJobs = [
     { 
       id: '1', 
@@ -68,7 +65,6 @@ const PlacementHub = () => {
     }
   ];
 
-  // Mock applications data
   const applications = [
     { 
       id: '1', 
@@ -86,7 +82,6 @@ const PlacementHub = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simple mock login - in a real app, this would validate against API
     if (username === 'student' && password === 'password') {
       setIsLoggedIn(true);
       toast.success('Login successful');
@@ -104,7 +99,6 @@ const PlacementHub = () => {
   };
 
   const handleStatusUpdate = (id: string, newStatus: string) => {
-    // This would update the status in a real application
     toast.success(`Application status updated to: ${newStatus}`);
   };
 
@@ -114,7 +108,6 @@ const PlacementHub = () => {
       return;
     }
     
-    // In a real app, this would handle file upload
     setCertificates([...certificates, { name: certName, date: new Date() }]);
     setCertName('');
     toast.success('Certificate uploaded successfully');
@@ -198,7 +191,6 @@ const PlacementHub = () => {
         </div>
         
         <div className="max-w-6xl mx-auto">
-          {/* Student Profile Card */}
           <Card className="mb-8 overflow-hidden">
             <div className="flex flex-col md:flex-row">
               <div className="md:w-1/4 bg-secondary/20 p-6 flex flex-col items-center justify-center">
@@ -243,12 +235,11 @@ const PlacementHub = () => {
                   Track Applications
                 </TabsTrigger>
                 <TabsTrigger value="certificates" className="flex items-center gap-2">
-                  <Certificate size={16} />
+                  <Award size={16} />
                   Certificates
                 </TabsTrigger>
               </TabsList>
               
-              {/* Available Jobs Tab */}
               <TabsContent value="jobs" className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {availableJobs.map(job => (
@@ -308,7 +299,6 @@ const PlacementHub = () => {
                 </div>
               </TabsContent>
               
-              {/* Track Applications Tab */}
               <TabsContent value="applications">
                 <Card>
                   <CardHeader>
@@ -373,7 +363,6 @@ const PlacementHub = () => {
                 </Card>
               </TabsContent>
               
-              {/* Certificates Tab */}
               <TabsContent value="certificates">
                 <Card>
                   <CardHeader>
@@ -419,7 +408,7 @@ const PlacementHub = () => {
                       </Table>
                     ) : (
                       <div className="bg-secondary/10 rounded-lg p-8 text-center">
-                        <Certificate className="mx-auto h-12 w-12 text-muted-foreground mb-2" />
+                        <Award className="mx-auto h-12 w-12 text-muted-foreground mb-2" />
                         <h3 className="text-lg font-medium mb-1">No certificates yet</h3>
                         <p className="text-muted-foreground">
                           Upload your first certificate to showcase your skills.
