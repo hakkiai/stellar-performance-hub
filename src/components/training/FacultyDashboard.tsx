@@ -13,8 +13,26 @@ interface FacultyDashboardProps {
   facultyUsername: string;
 }
 
+// Define types for student data
+interface Student {
+  id: string;
+  name: string;
+  roll: string;
+  performanceLevel: string;
+  feedback: string;
+}
+
+// Define types for the nested data structure
+interface SectionData {
+  [section: string]: Student[];
+}
+
+interface YearData {
+  [year: string]: SectionData;
+}
+
 // Mock student data for the different years and sections
-const mockStudentsData = {
+const mockStudentsData: YearData = {
   '1': {
     'A': [
       { id: '1A01', name: 'Rahul Kumar', roll: 'CSE2023001', performanceLevel: '', feedback: '' },
@@ -82,7 +100,16 @@ const mockStudentsData = {
 };
 
 // Mapping for faculty usernames to their details
-const facultyDetails = {
+interface FacultyDetail {
+  name: string;
+  subject: string;
+}
+
+interface FacultyDetailsMap {
+  [key: string]: FacultyDetail;
+}
+
+const facultyDetails: FacultyDetailsMap = {
   'faculty1': { name: 'Sai Raj', subject: 'Java' },
   'faculty2': { name: 'Anjali Sharma', subject: 'Python' },
   'faculty3': { name: 'Ravi Kumar', subject: 'Cloud Computing' },
@@ -102,18 +129,16 @@ const sections = ['A', 'B'];
 const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
   const [selectedYear, setSelectedYear] = useState<string>('');
   const [selectedSection, setSelectedSection] = useState<string>('');
-  const [students, setStudents] = useState<Array<any>>([]);
+  const [students, setStudents] = useState<Student[]>([]);
   
   // Get faculty details based on username
-  const faculty = facultyDetails[facultyUsername as keyof typeof facultyDetails] || 
+  const faculty = facultyDetails[facultyUsername] || 
     { name: facultyUsername, subject: 'Not Assigned' };
 
   const handleYearChange = (year: string) => {
     setSelectedYear(year);
-    if (selectedSection && mockStudentsData[year as keyof typeof mockStudentsData]) {
-      setStudents(
-        mockStudentsData[year as keyof typeof mockStudentsData][selectedSection as keyof typeof mockStudentsData[typeof year]]
-      );
+    if (selectedSection && mockStudentsData[year]) {
+      setStudents(mockStudentsData[year][selectedSection] || []);
     } else {
       setStudents([]);
     }
@@ -121,10 +146,8 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
 
   const handleSectionChange = (section: string) => {
     setSelectedSection(section);
-    if (selectedYear && mockStudentsData[selectedYear as keyof typeof mockStudentsData]) {
-      setStudents(
-        mockStudentsData[selectedYear as keyof typeof mockStudentsData][section as keyof typeof mockStudentsData[typeof selectedYear]]
-      );
+    if (selectedYear && mockStudentsData[selectedYear]) {
+      setStudents(mockStudentsData[selectedYear][section] || []);
     } else {
       setStudents([]);
     }
