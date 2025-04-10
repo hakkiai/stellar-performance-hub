@@ -53,20 +53,20 @@ const Navbar = () => {
               alt="Ideal Institute of Technology" 
               className="h-10 w-auto rounded-md"
             />
-            <span className="text-lg font-bold font-fira hidden md:inline-block animate-fade-in">
+            <span className="text-lg font-bold font-jetbrains hidden md:inline-block animate-fade-in">
               Ideal Institute of Technology
             </span>
           </Link>
 
           <div className="hidden md:flex items-center space-x-6">
-            <Link to="/" className="nav-link">Home</Link>
-            <Link to="/academic-analyzer" className="nav-link">Academic Analyzer</Link>
-            <Link to="/placement-hub" className="nav-link">Placement Hub</Link>
-            <Link to="/training-analyzer" className="nav-link">Training Analyzer</Link>
+            <Link to="/" className="nav-link text-base font-medium py-1">Home</Link>
+            <Link to="/academic-analyzer" className="nav-link text-base font-medium py-1">Academic Analyzer</Link>
+            <Link to="/placement-hub" className="nav-link text-base font-medium py-1">Placement Hub</Link>
+            <Link to="/training-analyzer" className="nav-link text-base font-medium py-1">Training Analyzer</Link>
             <ThemeToggle />
             <button
               onClick={() => setShowAdminModal(true)}
-              className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary/20 transition-colors"
+              className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary/20 transition-colors smooth-transition"
               aria-label="Admin Settings"
               title="Admin Access"
             >
@@ -78,7 +78,7 @@ const Navbar = () => {
             <ThemeToggle />
             <button
               onClick={() => setShowAdminModal(true)}
-              className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary/20 transition-colors"
+              className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary/20 transition-colors smooth-transition"
               aria-label="Admin Settings"
               title="Admin Access"
             >
@@ -86,7 +86,7 @@ const Navbar = () => {
             </button>
             <button 
               onClick={toggleMenu} 
-              className="text-foreground focus:outline-none"
+              className="text-foreground focus:outline-none smooth-transition"
               aria-label="Toggle menu"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}

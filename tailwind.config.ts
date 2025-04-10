@@ -106,10 +106,16 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			fontFamily: {
-				'fira': ['"Fira Code"', 'monospace'],
-				'jetbrains': ['"JetBrains Mono"', 'monospace'],
-				'space': ['Space Grotesk', 'sans-serif'],
+				'sans': ['JetBrains Mono', 'monospace'],
 				'mono': ['JetBrains Mono', 'monospace'],
+				'jetbrains': ['JetBrains Mono', 'monospace'],
+				'fira': ['JetBrains Mono', 'monospace'], // Replacing with JetBrains Mono
+				'space': ['JetBrains Mono', 'monospace'], // Replacing with JetBrains Mono
+			},
+			textShadow: {
+				sm: '0 1px 2px rgba(0, 0, 0, 0.5)',
+				DEFAULT: '0 2px 4px rgba(0, 0, 0, 0.5)',
+				lg: '0 8px 16px rgba(0, 0, 0, 0.5)',
 			},
 			keyframes: {
 				'accordion-down': {
@@ -120,14 +126,6 @@ export default {
 					from: { height: 'var(--radix-accordion-content-height)' },
 					to: { height: '0' }
 				},
-				'float': {
-					'0%, 100%': { transform: 'translateY(0)' },
-					'50%': { transform: 'translateY(-10px)' }
-				},
-				'pulse-soft': {
-					'0%, 100%': { opacity: '1' },
-					'50%': { opacity: '0.8' }
-				},
 				'fade-in': {
 					'0%': { opacity: '0', transform: 'translateY(10px)' },
 					'100%': { opacity: '1', transform: 'translateY(0)' }
@@ -136,55 +134,13 @@ export default {
 					'0%': { opacity: '1', transform: 'translateY(0)' },
 					'100%': { opacity: '0', transform: 'translateY(10px)' }
 				},
-				'shimmer': {
-					'0%': { backgroundPosition: '-1000px 0' },
-					'100%': { backgroundPosition: '1000px 0' }
-				},
-				'ripple': {
-					'0%': { transform: 'scale(0.8)', opacity: '1' },
-					'100%': { transform: 'scale(2)', opacity: '0' }
-				},
-				'spin-slow': {
-					'from': { transform: 'rotate(0deg)' },
-					'to': { transform: 'rotate(360deg)' }
-				},
-				'scroll-down': {
-					'0%': { transform: 'translateY(0)', opacity: '0' },
-					'30%': { opacity: '1' },
-					'60%': { opacity: '1' },
-					'100%': { transform: 'translateY(8px)', opacity: '0' }
-				},
-				'background-pan': {
-					'from': { backgroundPosition: '0% center' },
-					'to': { backgroundPosition: '-200% center' }
-				},
-				'twinkle': {
-					'0%, 100%': { opacity: '0.2' },
-					'50%': { opacity: '1' }
-				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'float': 'float 4s ease-in-out infinite',
-				'float-slow': 'float 6s ease-in-out infinite',
-				'pulse-soft': 'pulse-soft 3s ease-in-out infinite',
 				'fade-in': 'fade-in 0.6s ease-out',
 				'fade-out': 'fade-out 0.6s ease-out',
-				'shimmer': 'shimmer 2s linear infinite',
-				'ripple': 'ripple 0.6s linear',
-				'spin-slow': 'spin-slow 1s ease-in-out',
-				'scroll-down': 'scroll-down 2s infinite',
-				'background-pan': 'background-pan 3s linear infinite',
-				'twinkle': 'twinkle 5s infinite ease-in-out',
 			},
-			backgroundImage: {
-				'space-gradient': 'linear-gradient(to bottom, #0f172a, #1e293b)',
-				'card-gradient': 'linear-gradient(to bottom right, rgba(99, 102, 241, 0.05), rgba(99, 102, 241, 0.1))',
-				'button-gradient': 'linear-gradient(to right, #6366f1, #8b5cf6)',
-				'cosmic-dots': 'radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px)',
-				'cosmic-glow': 'radial-gradient(circle at center, rgba(139, 92, 246, 0.15) 0%, transparent 70%)',
-			}
 		}
 	},
 	plugins: [require("tailwindcss-animate")],

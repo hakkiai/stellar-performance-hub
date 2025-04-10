@@ -17,14 +17,14 @@ const Hero = () => {
       <div className="absolute inset-0 z-0">
         <div className={`absolute inset-0 bg-gradient-to-b ${
           theme === 'dark' 
-            ? 'from-background/60 via-background/40 to-background/60' 
-            : 'from-background/40 via-background/20 to-background/40'
+            ? 'from-background/50 via-background/30 to-background/50' 
+            : 'from-background/30 via-background/10 to-background/30'
         } z-10`} />
         
         <img 
           src="/lovable-uploads/4d069f44-3e48-4c2e-b4ab-d0f052f15ee1.png" 
           alt="Ideal Institute Campus" 
-          className="w-full h-full object-cover object-center brightness-110"
+          className="w-full h-full object-cover object-center brightness-125"
         />
       </div>
       
@@ -52,9 +52,9 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.6 }}
-            className="mb-6 mt-8 text-4xl md:text-6xl lg:text-7xl font-bold"
+            className="mb-6 mt-8 text-4xl md:text-6xl lg:text-7xl college-name"
           >
-            <span className="text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] font-bold">
+            <span className="text-white drop-shadow-[0_2px_8px_rgba(255,255,255,0.8)] font-bold">
               Ideal Institute of Technology
             </span>
           </motion.h1>
@@ -63,7 +63,7 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.8 }}
-            className="mb-10 max-w-3xl text-lg md:text-xl text-white font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)] leading-relaxed"
+            className="mb-10 max-w-3xl text-lg md:text-xl text-white font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)] leading-relaxed"
           >
             Empowering futures through excellence in education and innovation in a world of boundless possibilities
           </motion.p>
@@ -78,7 +78,7 @@ const Hero = () => {
               href="#features" 
               className="px-8 py-3 rounded-full bg-gradient-to-r from-space-500 to-cosmic-600 
                        text-white font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-1 
-                       transition-all duration-300 flex items-center space-x-2"
+                       transition-all duration-200 flex items-center space-x-2 smooth-transition"
             >
               <span>Explore Features</span>
             </a>
@@ -86,7 +86,7 @@ const Hero = () => {
               href="/academic-analyzer" 
               className="px-8 py-3 rounded-full bg-secondary/30 backdrop-blur-sm border border-white/50
                        text-white font-medium shadow-lg hover:shadow-xl hover:bg-secondary/50
-                       transform hover:-translate-y-1 transition-all duration-300"
+                       transform hover:-translate-y-1 transition-all duration-200 smooth-transition"
             >
               Get Started
             </a>
