@@ -143,5 +143,19 @@ export default {
 			},
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		function({ addUtilities, theme }) {
+			const newUtilities = {};
+			const textShadows = theme('textShadow', {});
+			
+			Object.entries(textShadows).forEach(([key, value]) => {
+				newUtilities[`.text-shadow${key === 'DEFAULT' ? '' : `-${key}`}`] = {
+					'text-shadow': value,
+				};
+			});
+			
+			addUtilities(newUtilities);
+		}
+	],
 } satisfies Config;

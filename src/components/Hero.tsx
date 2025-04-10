@@ -17,14 +17,14 @@ const Hero = () => {
       <div className="absolute inset-0 z-0">
         <div className={`absolute inset-0 bg-gradient-to-b ${
           theme === 'dark' 
-            ? 'from-background/50 via-background/30 to-background/50' 
-            : 'from-background/30 via-background/10 to-background/30'
+            ? 'from-background/30 via-background/20 to-background/30' 
+            : 'from-background/20 via-background/5 to-background/20'
         } z-10`} />
         
         <img 
           src="/lovable-uploads/4d069f44-3e48-4c2e-b4ab-d0f052f15ee1.png" 
           alt="Ideal Institute Campus" 
-          className="w-full h-full object-cover object-center brightness-125"
+          className="w-full h-full object-cover object-center brightness-[1.35]"
         />
       </div>
       
@@ -54,7 +54,7 @@ const Hero = () => {
             transition={{ duration: 1, delay: 0.6 }}
             className="mb-6 mt-8 text-4xl md:text-6xl lg:text-7xl college-name"
           >
-            <span className="text-white drop-shadow-[0_2px_8px_rgba(255,255,255,0.8)] font-bold">
+            <span className="font-bold drop-shadow-[0_2px_8px_rgba(255,255,255,0.8)]">
               Ideal Institute of Technology
             </span>
           </motion.h1>
