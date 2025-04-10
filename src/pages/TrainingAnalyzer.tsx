@@ -36,27 +36,61 @@ const TrainingAnalyzer = () => {
         
         <div className="max-w-5xl mx-auto">
           {!isLoggedIn ? (
-            <LoginForm onLoginSuccess={(u, p) => {
-              // Super simplified auth logic for demo
-              if (u === 'admin' && p === 'admin') {
-                handleLoginSuccess('hod', u);
-              } else if (u.startsWith('faculty') && p === 'password') {
-                handleLoginSuccess('faculty', u);
-              } else if (u.startsWith('student') && p === 'password') {
-                // Student login logic would go here
-                handleLoginSuccess('student', u);
-              } else {
-                return false;
-              }
-              return true;
-            }} />
+            <div className="glass-card p-6 rounded-xl">
+              <h2 className="text-xl font-semibold mb-4 text-center">Login to Training Analyzer</h2>
+              <LoginForm onLoginSuccess={(u, p) => {
+                // Sample login credentials for demo
+                if (u === 'admin' && p === 'admin') {
+                  handleLoginSuccess('hod', u);
+                  return true;
+                } else if (u === 'sairaj' && p === 'faculty') {
+                  // Sai Raj - Java faculty
+                  handleLoginSuccess('faculty', 'faculty1');
+                  return true;
+                } else if (u === 'anjali' && p === 'faculty') {
+                  // Anjali Sharma - Python faculty
+                  handleLoginSuccess('faculty', 'faculty2');
+                  return true;
+                } else if (u === 'ravi' && p === 'faculty') {
+                  // Ravi Kumar - Cloud Computing faculty
+                  handleLoginSuccess('faculty', 'faculty3');
+                  return true;
+                } else {
+                  return false;
+                }
+              }} />
+              
+              <div className="mt-6 pt-6 border-t border-border/30">
+                <h3 className="text-md font-medium mb-2 text-center">Sample Login Credentials</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 text-sm">
+                  <div className="glass-card p-3 rounded-lg">
+                    <p className="font-medium">HOD / Admin</p>
+                    <p>Username: <span className="text-primary">admin</span></p>
+                    <p>Password: <span className="text-primary">admin</span></p>
+                  </div>
+                  <div className="glass-card p-3 rounded-lg">
+                    <p className="font-medium">Java Faculty</p>
+                    <p>Username: <span className="text-primary">sairaj</span></p>
+                    <p>Password: <span className="text-primary">faculty</span></p>
+                  </div>
+                  <div className="glass-card p-3 rounded-lg">
+                    <p className="font-medium">Python Faculty</p>
+                    <p>Username: <span className="text-primary">anjali</span></p>
+                    <p>Password: <span className="text-primary">faculty</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
           ) : (
             <div className="glass-card p-6 rounded-xl">
               <div className="mb-6 flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold">Welcome, {username}</h2>
+                  <h2 className="text-xl font-semibold">
+                    {userRole === 'hod' ? 'HOD Dashboard' : 
+                     userRole === 'faculty' ? 'Faculty Dashboard' : 'Student Dashboard'}
+                  </h2>
                   <p className="text-muted-foreground text-sm">
-                    Role: {userRole === 'hod' ? 'Super Admin (HOD)' : userRole === 'faculty' ? 'Faculty' : 'Student'}
+                    Logged in as: <span className="text-primary font-medium">{username}</span>
                   </p>
                 </div>
                 <button 

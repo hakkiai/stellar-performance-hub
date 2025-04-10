@@ -33,7 +33,7 @@ const Hero = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="relative z-20 max-w-4xl"
+        className="relative z-20 max-w-5xl w-full mx-auto"
       >
         <div className="flex flex-col items-center justify-center">
           <motion.div 
@@ -52,9 +52,9 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.6 }}
-            className="mb-6 mt-8 text-4xl md:text-6xl lg:text-7xl college-name"
+            className="mb-6 mt-8 text-4xl md:text-6xl lg:text-7xl w-full college-name"
           >
-            <span className="font-bold drop-shadow-[0_2px_8px_rgba(255,255,255,0.8)]">
+            <span className="font-bold text-white bg-background/40 px-6 py-2 rounded-lg backdrop-blur-sm inline-block">
               Ideal Institute of Technology
             </span>
           </motion.h1>
@@ -63,7 +63,7 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.8 }}
-            className="mb-10 max-w-3xl text-lg md:text-xl text-white font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)] leading-relaxed"
+            className="mb-10 max-w-3xl text-lg md:text-xl text-white font-medium bg-background/30 px-4 py-2 rounded-md backdrop-blur-sm leading-relaxed"
           >
             Empowering futures through excellence in education and innovation in a world of boundless possibilities
           </motion.p>
@@ -76,7 +76,7 @@ const Hero = () => {
           >
             <a 
               href="#features" 
-              className="px-8 py-3 rounded-full bg-gradient-to-r from-space-500 to-cosmic-600 
+              className="px-8 py-3 rounded-full bg-background/70 backdrop-blur-md border border-white/30
                        text-white font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-1 
                        transition-all duration-200 flex items-center space-x-2 smooth-transition"
             >

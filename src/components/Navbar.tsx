@@ -44,7 +44,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-background/80 backdrop-blur-lg shadow-md' : 'bg-transparent'}`}>
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-background/80 backdrop-blur-lg shadow-md' : 'bg-background/60 backdrop-blur-md'}`}>
       <div className="container mx-auto px-4 md:px-6 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
@@ -59,10 +59,10 @@ const Navbar = () => {
           </Link>
 
           <div className="hidden md:flex items-center space-x-6">
-            <Link to="/" className="nav-link text-base font-medium py-1">Home</Link>
-            <Link to="/academic-analyzer" className="nav-link text-base font-medium py-1">Academic Analyzer</Link>
-            <Link to="/placement-hub" className="nav-link text-base font-medium py-1">Placement Hub</Link>
-            <Link to="/training-analyzer" className="nav-link text-base font-medium py-1">Training Analyzer</Link>
+            <Link to="/" className="nav-link text-base font-medium py-1 bg-background/30 px-3 rounded-md backdrop-blur-sm">Home</Link>
+            <Link to="/academic-analyzer" className="nav-link text-base font-medium py-1 bg-background/30 px-3 rounded-md backdrop-blur-sm">Academic Analyzer</Link>
+            <Link to="/placement-hub" className="nav-link text-base font-medium py-1 bg-background/30 px-3 rounded-md backdrop-blur-sm">Placement Hub</Link>
+            <Link to="/training-analyzer" className="nav-link text-base font-medium py-1 bg-background/30 px-3 rounded-md backdrop-blur-sm">Training Analyzer</Link>
             <ThemeToggle />
             <button
               onClick={() => setShowAdminModal(true)}
