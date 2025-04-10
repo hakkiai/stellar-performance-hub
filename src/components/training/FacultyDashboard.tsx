@@ -2,11 +2,10 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, Download, Save, FileSpreadsheet, Filter } from 'lucide-react';
+import { Label } from "@/components/ui/label";
+import { Download, Save, Filter } from 'lucide-react';
 import { toast } from "sonner";
 
 interface FacultyDashboardProps {
@@ -110,9 +109,10 @@ interface FacultyDetailsMap {
 }
 
 const facultyDetails: FacultyDetailsMap = {
-  'faculty1': { name: 'Sai Raj', subject: 'Java' },
-  'faculty2': { name: 'Anjali Sharma', subject: 'Python' },
-  'faculty3': { name: 'Ravi Kumar', subject: 'Cloud Computing' },
+  'sairaj': { name: 'Sai Raj', subject: 'Java' },
+  'anjali': { name: 'Anjali Sharma', subject: 'Python' },
+  'ravi': { name: 'Ravi Kumar', subject: 'Cloud Computing' },
+  'abhishek': { name: 'Abhishek Mishra', subject: 'Data Structures' },
 };
 
 const performanceLevels = [
