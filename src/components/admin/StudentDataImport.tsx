@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -150,8 +149,7 @@ const StudentDataImport = () => {
                   <h3 className="text-md font-medium mb-2">CSV Preview</h3>
                   <div className="max-h-80 overflow-auto border rounded-md">
                     <CSVEditor 
-                      headers={["hallticket_no", "regulation", "batch", "branch", "student_name"]}
-                      rows={csvData as any[]} 
+                      data={csvData} 
                       onChange={(newData) => setCsvData(newData as CSVStudentData[])}
                     />
                   </div>
