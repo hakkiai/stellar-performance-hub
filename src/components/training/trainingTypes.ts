@@ -24,6 +24,12 @@ export interface YearData {
   [year: string]: BranchData;
 }
 
+// Roll Number Range Filter
+export interface RollNumberRange {
+  start: string;
+  end: string;
+}
+
 // Mapping for faculty usernames to their details
 export interface FacultyDetail {
   name: string;
@@ -45,12 +51,12 @@ export const performanceLevels = [
 export interface SessionRecord {
   id: string;
   date: string;
-  year: string;
   branch: string;
   regulation: string;
   subject: string;
   testConducted: string;
   studentsAppeared: string[];
+  rollRange?: RollNumberRange;
 }
 
 // New interface for CSV Student Data
@@ -64,3 +70,6 @@ export interface CSVStudentData {
 
 // Branch options
 export const branchOptions = ["CSE", "CSM", "MECH", "CIVIL", "ECE"];
+
+// Regulation options
+export const regulationOptions = ["R20", "R19", "R18", "R22"];

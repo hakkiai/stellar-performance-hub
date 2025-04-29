@@ -13,89 +13,66 @@ import { Download, Save, Filter, BarChart2, Book, Calendar, Upload } from 'lucid
 import { toast } from "sonner";
 import SessionRecordTable from './SessionRecordTable';
 import AnalyticsView from './AnalyticsView';
-import { Student, FacultyDetailsMap, performanceLevels, branchOptions, SessionRecord } from './trainingTypes';
+import { 
+  Student, 
+  FacultyDetailsMap, 
+  performanceLevels, 
+  branchOptions, 
+  SessionRecord, 
+  regulationOptions, 
+  RollNumberRange 
+} from './trainingTypes';
 
 interface FacultyDashboardProps {
   facultyUsername: string;
 }
 
-// Mock student data for the different years and branches
+// Mock student data for the different branches and regulations
 const mockStudentsData = {
-  '1': {
-    'CSE': {
-      'R20': [
-        { id: '1A01', name: 'Rahul Kumar', roll: 'CSE2023001', regulation: 'R20', batch: '2023-27', branch: 'CSE', performanceLevel: '', feedback: '' },
-        { id: '1A02', name: 'Priya Sharma', roll: 'CSE2023002', regulation: 'R20', batch: '2023-27', branch: 'CSE', performanceLevel: '', feedback: '' },
-        { id: '1A03', name: 'Amit Singh', roll: 'CSE2023003', regulation: 'R20', batch: '2023-27', branch: 'CSE', performanceLevel: '', feedback: '' }
-      ],
-      'R19': [
-        { id: '1B01', name: 'Arun Verma', roll: 'CSE2023101', regulation: 'R19', batch: '2023-27', branch: 'CSE', performanceLevel: '', feedback: '' },
-        { id: '1B02', name: 'Divya Mishra', roll: 'CSE2023102', regulation: 'R19', batch: '2023-27', branch: 'CSE', performanceLevel: '', feedback: '' }
-      ]
-    },
-    'CSM': {
-      'R20': [
-        { id: '1C01', name: 'Suresh Reddy', roll: 'CSM2023001', regulation: 'R20', batch: '2023-27', branch: 'CSM', performanceLevel: '', feedback: '' },
-        { id: '1C02', name: 'Kavita Rao', roll: 'CSM2023002', regulation: 'R20', batch: '2023-27', branch: 'CSM', performanceLevel: '', feedback: '' }
-      ]
-    },
-    'MECH': {
-      'R20': [
-        { id: '1D01', name: 'Anand Kumar', roll: 'MECH2023001', regulation: 'R20', batch: '2023-27', branch: 'MECH', performanceLevel: '', feedback: '' },
-        { id: '1D02', name: 'Shilpa Iyer', roll: 'MECH2023002', regulation: 'R20', batch: '2023-27', branch: 'MECH', performanceLevel: '', feedback: '' }
-      ]
-    },
-    'CIVIL': {
-      'R20': [
-        { id: '1E01', name: 'Ramesh Kumar', roll: 'CIVIL2023001', regulation: 'R20', batch: '2023-27', branch: 'CIVIL', performanceLevel: '', feedback: '' },
-        { id: '1E02', name: 'Preethi Singh', roll: 'CIVIL2023002', regulation: 'R20', batch: '2023-27', branch: 'CIVIL', performanceLevel: '', feedback: '' }
-      ]
-    },
-    'ECE': {
-      'R20': [
-        { id: '1F01', name: 'Deepak Sharma', roll: 'ECE2023001', regulation: 'R20', batch: '2023-27', branch: 'ECE', performanceLevel: '', feedback: '' },
-        { id: '1F02', name: 'Anjali Patel', roll: 'ECE2023002', regulation: 'R20', batch: '2023-27', branch: 'ECE', performanceLevel: '', feedback: '' }
-      ]
-    }
+  'CSE': {
+    'R20': [
+      { id: '1A01', name: 'Rahul Kumar', roll: '216K1A0501', regulation: 'R20', batch: '2023-27', branch: 'CSE', performanceLevel: '', feedback: '' },
+      { id: '1A02', name: 'Priya Sharma', roll: '216K1A0502', regulation: 'R20', batch: '2023-27', branch: 'CSE', performanceLevel: '', feedback: '' },
+      { id: '1A03', name: 'Amit Singh', roll: '216K1A0503', regulation: 'R20', batch: '2023-27', branch: 'CSE', performanceLevel: '', feedback: '' },
+      { id: '1A04', name: 'Sneha Reddy', roll: '216K1A0504', regulation: 'R20', batch: '2023-27', branch: 'CSE', performanceLevel: '', feedback: '' },
+      { id: '1A05', name: 'Kiran Verma', roll: '216K1A0505', regulation: 'R20', batch: '2023-27', branch: 'CSE', performanceLevel: '', feedback: '' }
+    ],
+    'R19': [
+      { id: '1B01', name: 'Arun Verma', roll: '226K1A0501', regulation: 'R19', batch: '2022-26', branch: 'CSE', performanceLevel: '', feedback: '' },
+      { id: '1B02', name: 'Divya Mishra', roll: '226K1A0502', regulation: 'R19', batch: '2022-26', branch: 'CSE', performanceLevel: '', feedback: '' },
+      { id: '1B03', name: 'Vikram Singh', roll: '226K1A0503', regulation: 'R19', batch: '2022-26', branch: 'CSE', performanceLevel: '', feedback: '' }
+    ]
   },
-  '2': {
-    'CSE': {
-      'R20': [
-        { id: '2A01', name: 'Rajesh Khanna', roll: 'CSE2022001', regulation: 'R20', batch: '2022-26', branch: 'CSE', performanceLevel: '', feedback: '' },
-        { id: '2A02', name: 'Pooja Mehta', roll: 'CSE2022002', regulation: 'R20', batch: '2022-26', branch: 'CSE', performanceLevel: '', feedback: '' }
-      ]
-    },
-    'CSM': {
-      'R20': [
-        { id: '2B01', name: 'Manoj Patel', roll: 'CSM2022101', regulation: 'R20', batch: '2022-26', branch: 'CSM', performanceLevel: '', feedback: '' },
-        { id: '2B02', name: 'Anjali Reddy', roll: 'CSM2022102', regulation: 'R20', batch: '2022-26', branch: 'CSM', performanceLevel: '', feedback: '' }
-      ]
-    },
-    'MECH': {
-      'R20': [
-        { id: '2D01', name: 'Smita Kapoor', roll: 'MECH2022001', regulation: 'R20', batch: '2022-26', branch: 'MECH', performanceLevel: '', feedback: '' },
-        { id: '2D02', name: 'Aditya Gupta', roll: 'MECH2022002', regulation: 'R20', batch: '2022-26', branch: 'MECH', performanceLevel: '', feedback: '' }
-      ]
-    }
+  'CSM': {
+    'R20': [
+      { id: '1C01', name: 'Suresh Reddy', roll: '216K1A0601', regulation: 'R20', batch: '2023-27', branch: 'CSM', performanceLevel: '', feedback: '' },
+      { id: '1C02', name: 'Kavita Rao', roll: '216K1A0602', regulation: 'R20', batch: '2023-27', branch: 'CSM', performanceLevel: '', feedback: '' },
+      { id: '1C03', name: 'Ravi Sharma', roll: '216K1A0603', regulation: 'R20', batch: '2023-27', branch: 'CSM', performanceLevel: '', feedback: '' }
+    ],
+    'R22': [
+      { id: '1D01', name: 'Manish Kumar', roll: '236K1A0601', regulation: 'R22', batch: '2023-27', branch: 'CSM', performanceLevel: '', feedback: '' },
+      { id: '1D02', name: 'Neha Patel', roll: '236K1A0602', regulation: 'R22', batch: '2023-27', branch: 'CSM', performanceLevel: '', feedback: '' }
+    ]
   },
-  '3': {
-    'CSE': {
-      'R19': [
-        { id: '3A01', name: 'Vivek Maran', roll: 'CSE2021001', regulation: 'R19', batch: '2021-25', branch: 'CSE', performanceLevel: '', feedback: '' },
-        { id: '3A02', name: 'Sneha Saha', roll: 'CSE2021002', regulation: 'R19', batch: '2021-25', branch: 'CSE', performanceLevel: '', feedback: '' }
-      ]
-    },
-    'CSM': {
-      'R19': [
-        { id: '3B01', name: 'Rakesh Singh', roll: 'CSM2021101', regulation: 'R19', batch: '2021-25', branch: 'CSM', performanceLevel: '', feedback: '' },
-        { id: '3B02', name: 'Kavya Nair', roll: 'CSM2021102', regulation: 'R19', batch: '2021-25', branch: 'CSM', performanceLevel: '', feedback: '' }
-      ]
-    }
+  'MECH': {
+    'R20': [
+      { id: '1E01', name: 'Anand Kumar', roll: '216K1A0301', regulation: 'R20', batch: '2023-27', branch: 'MECH', performanceLevel: '', feedback: '' },
+      { id: '1E02', name: 'Shilpa Iyer', roll: '216K1A0302', regulation: 'R20', batch: '2023-27', branch: 'MECH', performanceLevel: '', feedback: '' }
+    ]
+  },
+  'CIVIL': {
+    'R20': [
+      { id: '1F01', name: 'Ramesh Kumar', roll: '216K1A0101', regulation: 'R20', batch: '2023-27', branch: 'CIVIL', performanceLevel: '', feedback: '' },
+      { id: '1F02', name: 'Preethi Singh', roll: '216K1A0102', regulation: 'R20', batch: '2023-27', branch: 'CIVIL', performanceLevel: '', feedback: '' }
+    ]
+  },
+  'ECE': {
+    'R20': [
+      { id: '1G01', name: 'Deepak Sharma', roll: '216K1A0401', regulation: 'R20', batch: '2023-27', branch: 'ECE', performanceLevel: '', feedback: '' },
+      { id: '1G02', name: 'Anjali Patel', roll: '216K1A0402', regulation: 'R20', batch: '2023-27', branch: 'ECE', performanceLevel: '', feedback: '' }
+    ]
   }
 };
-
-// Available regulations
-const regulations = ['R20', 'R19', 'R18'];
 
 // Mapping for faculty usernames to their details
 const facultyDetails: FacultyDetailsMap = {
@@ -105,11 +82,8 @@ const facultyDetails: FacultyDetailsMap = {
   'abhishek': { name: 'Abhishek Mishra', subject: 'Data Structures' },
 };
 
-const years = ['1', '2', '3', '4'];
-
 const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
   const [activeTab, setActiveTab] = useState<string>("sessions");
-  const [selectedYear, setSelectedYear] = useState<string>('');
   const [selectedBranch, setSelectedBranch] = useState<string>('');
   const [selectedRegulation, setSelectedRegulation] = useState<string>('');
   const [students, setStudents] = useState<Student[]>([]);
@@ -117,31 +91,57 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
   const [testConducted, setTestConducted] = useState<string>('');
   const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
   const [sessionRecords, setSessionRecords] = useState<SessionRecord[]>([]);
+  const [rollNumberRange, setRollNumberRange] = useState<RollNumberRange>({
+    start: '',
+    end: ''
+  });
   
   // Get faculty details based on username
   const faculty = facultyDetails[facultyUsername] || 
     { name: facultyUsername, subject: 'Not Assigned' };
 
-  const handleYearChange = (year: string) => {
-    setSelectedYear(year);
-    setSelectedBranch('');
-    setSelectedRegulation('');
-    setStudents([]);
-  };
-
   const handleBranchChange = (branch: string) => {
     setSelectedBranch(branch);
     setSelectedRegulation('');
     setStudents([]);
+    setRollNumberRange({ start: '', end: '' });
   };
 
   const handleRegulationChange = (regulation: string) => {
     setSelectedRegulation(regulation);
     
-    if (selectedYear && selectedBranch && mockStudentsData[selectedYear]?.[selectedBranch]?.[regulation]) {
-      setStudents(mockStudentsData[selectedYear][selectedBranch][regulation] || []);
+    if (selectedBranch && mockStudentsData[selectedBranch]?.[regulation]) {
+      setStudents(mockStudentsData[selectedBranch][regulation] || []);
+      
+      // Set default roll number range if students exist
+      if (mockStudentsData[selectedBranch][regulation].length > 0) {
+        const firstRoll = mockStudentsData[selectedBranch][regulation][0].roll;
+        const lastRoll = mockStudentsData[selectedBranch][regulation][mockStudentsData[selectedBranch][regulation].length - 1].roll;
+        setRollNumberRange({
+          start: firstRoll,
+          end: lastRoll
+        });
+      }
     } else {
       setStudents([]);
+      setRollNumberRange({ start: '', end: '' });
+    }
+  };
+
+  const handleRollRangeChange = (field: 'start' | 'end', value: string) => {
+    setRollNumberRange(prev => ({
+      ...prev,
+      [field]: value
+    }));
+
+    if (selectedBranch && selectedRegulation) {
+      // Filter students based on the roll number range
+      if (field === 'end' && rollNumberRange.start && value) {
+        const filteredStudents = mockStudentsData[selectedBranch][selectedRegulation].filter(
+          student => student.roll >= rollNumberRange.start && student.roll <= value
+        );
+        setStudents(filteredStudents);
+      }
     }
   };
 
@@ -174,34 +174,34 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
   };
 
   const handleSaveSession = () => {
-    if (!selectedYear || !selectedBranch || !selectedRegulation || !subject) {
-      toast.error("Please select year, branch, regulation, and subject before saving");
+    if (!selectedBranch || !selectedRegulation || !subject) {
+      toast.error("Please select branch, regulation, and subject before saving");
       return;
     }
 
     const newSession: SessionRecord = {
       id: Date.now().toString(),
       date: new Date().toISOString().split('T')[0],
-      year: selectedYear,
       branch: selectedBranch,
       regulation: selectedRegulation,
       subject: subject,
       testConducted: testConducted,
       studentsAppeared: selectedStudents,
+      rollRange: rollNumberRange
     };
 
     setSessionRecords([...sessionRecords, newSession]);
-    toast.success(`Session record saved for ${subject} - Year ${selectedYear}, Branch ${selectedBranch}, Regulation ${selectedRegulation}`);
+    toast.success(`Session record saved for ${subject} - Branch ${selectedBranch}, Regulation ${selectedRegulation}`);
   };
 
   const handleSaveEvaluations = () => {
     // In a real app, this would save to backend
-    toast.success(`Evaluations saved for Year ${selectedYear}, Branch ${selectedBranch}, Regulation ${selectedRegulation}`);
+    toast.success(`Evaluations saved for Branch ${selectedBranch}, Regulation ${selectedRegulation}`);
   };
 
   const handleDownloadReport = () => {
     // In a real app, this would generate and download a report
-    toast.success(`Report generated for Year ${selectedYear}, Branch ${selectedBranch}, Regulation ${selectedRegulation}`);
+    toast.success(`Report generated for Branch ${selectedBranch}, Regulation ${selectedRegulation}`);
   };
 
   const handleFakeDataEntry = () => {
@@ -256,34 +256,12 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
           <div className="glass-card p-4 rounded-lg">
             <h3 className="font-medium mb-4 text-lg">Select Class</h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div>
-                <Label htmlFor="year-select">Year</Label>
-                <Select 
-                  value={selectedYear} 
-                  onValueChange={handleYearChange}
-                >
-                  <SelectTrigger id="year-select">
-                    <SelectValue placeholder="Select year" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {years.map((year) => (
-                      <SelectItem key={year} value={year}>
-                        {year === '1' ? '1st Year' : 
-                         year === '2' ? '2nd Year' : 
-                         year === '3' ? '3rd Year' : '4th Year'}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <div>
                 <Label htmlFor="branch-select">Branch</Label>
                 <Select 
                   value={selectedBranch} 
                   onValueChange={handleBranchChange}
-                  disabled={!selectedYear}
                 >
                   <SelectTrigger id="branch-select">
                     <SelectValue placeholder="Select branch" />
@@ -303,13 +281,13 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
                 <Select 
                   value={selectedRegulation} 
                   onValueChange={handleRegulationChange}
-                  disabled={!selectedYear || !selectedBranch}
+                  disabled={!selectedBranch}
                 >
                   <SelectTrigger id="regulation-select">
                     <SelectValue placeholder="Select regulation" />
                   </SelectTrigger>
                   <SelectContent>
-                    {regulations.map((regulation) => (
+                    {regulationOptions.map((regulation) => (
                       <SelectItem key={regulation} value={regulation}>
                         {regulation}
                       </SelectItem>
@@ -318,9 +296,35 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
                 </Select>
               </div>
             </div>
+            
+            {selectedBranch && selectedRegulation && (
+              <div className="space-y-4">
+                <h4 className="font-medium">Roll Number Range</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="start-roll">Starting Roll Number</Label>
+                    <Input
+                      id="start-roll"
+                      value={rollNumberRange.start}
+                      onChange={(e) => handleRollRangeChange('start', e.target.value)}
+                      placeholder="e.g., 216K1A0501"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="end-roll">Ending Roll Number</Label>
+                    <Input
+                      id="end-roll"
+                      value={rollNumberRange.end}
+                      onChange={(e) => handleRollRangeChange('end', e.target.value)}
+                      placeholder="e.g., 216K1A0520"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
-          {selectedYear && selectedBranch && selectedRegulation && (
+          {selectedBranch && selectedRegulation && (
             <Card className="shadow-md">
               <CardHeader>
                 <CardTitle>Session Details</CardTitle>
@@ -411,11 +415,11 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
             />
           )}
 
-          {selectedYear && selectedBranch && selectedRegulation && students.length > 0 ? (
+          {selectedBranch && selectedRegulation && students.length > 0 ? (
             <div className="glass-card p-4 rounded-lg">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-medium text-lg">
-                  Student Evaluations - Year {selectedYear}, Branch {selectedBranch}, Regulation {selectedRegulation}
+                  Student Evaluations - Branch {selectedBranch}, Regulation {selectedRegulation}
                 </h3>
                 <div className="flex gap-2">
                   <Button 
@@ -480,14 +484,14 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
                 </TableBody>
               </Table>
             </div>
-          ) : selectedYear && selectedBranch && selectedRegulation ? (
+          ) : selectedBranch && selectedRegulation ? (
             <div className="text-center py-8">
-              <p className="text-muted-foreground">No students found for the selected year, branch, and regulation.</p>
+              <p className="text-muted-foreground">No students found for the selected branch and regulation.</p>
             </div>
           ) : (
             <div className="text-center py-8 glass-card rounded-lg">
               <Filter className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-              <p className="text-lg font-medium mb-2">Select Year, Branch, and Regulation</p>
+              <p className="text-lg font-medium mb-2">Select Branch and Regulation</p>
               <p className="text-muted-foreground">
                 Please select all options to view session details and evaluate students.
               </p>

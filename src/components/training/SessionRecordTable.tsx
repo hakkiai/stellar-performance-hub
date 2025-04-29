@@ -22,11 +22,11 @@ const SessionRecordTable = ({ records, onDelete }: SessionRecordTableProps) => {
           <TableHeader>
             <TableRow>
               <TableHead>Date</TableHead>
-              <TableHead>Year</TableHead>
               <TableHead>Branch</TableHead>
               <TableHead>Regulation</TableHead>
               <TableHead>Subject</TableHead>
               <TableHead>Test Conducted</TableHead>
+              <TableHead>Roll Range</TableHead>
               <TableHead>Students</TableHead>
               <TableHead className="w-[80px]">Actions</TableHead>
             </TableRow>
@@ -36,16 +36,20 @@ const SessionRecordTable = ({ records, onDelete }: SessionRecordTableProps) => {
               records.map((record) => (
                 <TableRow key={record.id}>
                   <TableCell>{record.date}</TableCell>
-                  <TableCell>
-                    {record.year === '1' ? '1st Year' : 
-                     record.year === '2' ? '2nd Year' : 
-                     record.year === '3' ? '3rd Year' : '4th Year'}
-                  </TableCell>
                   <TableCell>{record.branch}</TableCell>
                   <TableCell>{record.regulation}</TableCell>
                   <TableCell>{record.subject}</TableCell>
                   <TableCell>
                     {record.testConducted ? record.testConducted : <span className="text-muted-foreground text-sm">None</span>}
+                  </TableCell>
+                  <TableCell>
+                    {record.rollRange ? (
+                      <span className="text-xs">
+                        {record.rollRange.start} - {record.rollRange.end}
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground text-sm">All</span>
+                    )}
                   </TableCell>
                   <TableCell>
                     <Badge variant="secondary">{record.studentsAppeared.length} students</Badge>

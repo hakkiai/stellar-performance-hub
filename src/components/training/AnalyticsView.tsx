@@ -50,16 +50,14 @@ const AnalyticsView = ({ facultyUsername, sessionRecords, students }: AnalyticsV
     count
   }));
 
-  // Sessions per year data
-  const sessionsByYear = sessionRecords.reduce((acc, session) => {
-    acc[session.year] = (acc[session.year] || 0) + 1;
+  // Sessions per regulation data
+  const sessionsByRegulation = sessionRecords.reduce((acc, session) => {
+    acc[session.regulation] = (acc[session.regulation] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
-  const yearSessionData = Object.entries(sessionsByYear).map(([year, count]) => ({
-    name: year === '1' ? '1st Year' : 
-          year === '2' ? '2nd Year' : 
-          year === '3' ? '3rd Year' : '4th Year',
+  const regulationSessionData = Object.entries(sessionsByRegulation).map(([regulation, count]) => ({
+    name: regulation,
     count
   }));
 
@@ -76,7 +74,7 @@ const AnalyticsView = ({ facultyUsername, sessionRecords, students }: AnalyticsV
         <SelectContent>
           <SelectItem value="performance">Student Performance Distribution</SelectItem>
           <SelectItem value="sessions">Sessions by Branch & Regulation</SelectItem>
-          <SelectItem value="years">Sessions by Year</SelectItem>
+          <SelectItem value="regulations">Sessions by Regulation</SelectItem>
           <SelectItem value="attendance">Student Attendance</SelectItem>
         </SelectContent>
       </Select>
@@ -159,17 +157,17 @@ const AnalyticsView = ({ facultyUsername, sessionRecords, students }: AnalyticsV
         </Card>
       )}
 
-      {selectedMetric === "years" && yearSessionData.length > 0 && (
+      {selectedMetric === "regulations" && regulationSessionData.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Sessions by Year</CardTitle>
-            <CardDescription>Number of sessions conducted per year</CardDescription>
+            <CardTitle>Sessions by Regulation</CardTitle>
+            <CardDescription>Number of sessions conducted per regulation</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                  data={yearSessionData}
+                  data={regulationSessionData}
                   margin={{
                     top: 5,
                     right: 30,
