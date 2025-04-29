@@ -1,10 +1,10 @@
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Trash, Eye } from 'lucide-react';
-import { SessionRecord } from './trainingTypes';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { SessionRecord } from "./trainingTypes";
+import { Trash } from "lucide-react";
+import { Badge } from "../ui/badge";
 
 interface SessionRecordTableProps {
   records: SessionRecord[];
@@ -13,60 +13,61 @@ interface SessionRecordTableProps {
 
 const SessionRecordTable = ({ records, onDelete }: SessionRecordTableProps) => {
   return (
-    <Card className="shadow-md">
+    <Card>
       <CardHeader>
-        <CardTitle className="text-xl font-semibold">Session Records</CardTitle>
+        <CardTitle>Session Records</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Date</TableHead>
-              <TableHead>Year & Branch</TableHead>
+              <TableHead>Year</TableHead>
+              <TableHead>Branch</TableHead>
+              <TableHead>Regulation</TableHead>
               <TableHead>Subject</TableHead>
               <TableHead>Test Conducted</TableHead>
               <TableHead>Students</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="w-[80px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {records.map((record) => (
-              <TableRow key={record.id}>
-                <TableCell>{record.date}</TableCell>
-                <TableCell>
-                  Year {record.year}, {record.branch}
-                </TableCell>
-                <TableCell>{record.subject}</TableCell>
-                <TableCell>
-                  {record.testConducted || <span className="text-muted-foreground italic">None</span>}
-                </TableCell>
-                <TableCell>
-                  <div className="flex flex-wrap gap-1">
-                    {record.studentsAppeared.length > 0 ? (
-                      <>
-                        <Badge variant="outline">{record.studentsAppeared.length} students</Badge>
-                      </>
-                    ) : (
-                      <span className="text-muted-foreground italic">None</span>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Button variant="ghost" size="icon">
-                      <Eye size={16} />
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
+            {records.length > 0 ? (
+              records.map((record) => (
+                <TableRow key={record.id}>
+                  <TableCell>{record.date}</TableCell>
+                  <TableCell>
+                    {record.year === '1' ? '1st Year' : 
+                     record.year === '2' ? '2nd Year' : 
+                     record.year === '3' ? '3rd Year' : '4th Year'}
+                  </TableCell>
+                  <TableCell>{record.branch}</TableCell>
+                  <TableCell>{record.regulation}</TableCell>
+                  <TableCell>{record.subject}</TableCell>
+                  <TableCell>
+                    {record.testConducted ? record.testConducted : <span className="text-muted-foreground text-sm">None</span>}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="secondary">{record.studentsAppeared.length} students</Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       onClick={() => onDelete(record.id)}
                     >
                       <Trash size={16} />
                     </Button>
-                  </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={8} className="text-center py-4 text-muted-foreground">
+                  No session records found
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </CardContent>

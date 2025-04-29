@@ -13,119 +13,89 @@ import { Download, Save, Filter, BarChart2, Book, Calendar, Upload } from 'lucid
 import { toast } from "sonner";
 import SessionRecordTable from './SessionRecordTable';
 import AnalyticsView from './AnalyticsView';
-import { Student, YearData, FacultyDetailsMap, performanceLevels } from './trainingTypes';
+import { Student, FacultyDetailsMap, performanceLevels, branchOptions, SessionRecord } from './trainingTypes';
 
 interface FacultyDashboardProps {
   facultyUsername: string;
 }
 
 // Mock student data for the different years and branches
-const mockStudentsData: YearData = {
+const mockStudentsData = {
   '1': {
-    'CSE-B': [
-      { id: '1A01', name: 'Rahul Kumar', roll: 'CSE2023001', performanceLevel: '', feedback: '' },
-      { id: '1A02', name: 'Priya Sharma', roll: 'CSE2023002', performanceLevel: '', feedback: '' },
-      { id: '1A03', name: 'Amit Singh', roll: 'CSE2023003', performanceLevel: '', feedback: '' },
-      { id: '1A04', name: 'Neha Gupta', roll: 'CSE2023004', performanceLevel: '', feedback: '' },
-      { id: '1A05', name: 'Vikram Patel', roll: 'CSE2023005', performanceLevel: '', feedback: '' },
-    ],
-    'CSM': [
-      { id: '1B01', name: 'Arun Verma', roll: 'CSM2023101', performanceLevel: '', feedback: '' },
-      { id: '1B02', name: 'Divya Mishra', roll: 'CSM2023102', performanceLevel: '', feedback: '' },
-      { id: '1B03', name: 'Karan Joshi', roll: 'CSM2023103', performanceLevel: '', feedback: '' },
-      { id: '1B04', name: 'Meera Roy', roll: 'CSM2023104', performanceLevel: '', feedback: '' },
-      { id: '1B05', name: 'Nikhil Tiwari', roll: 'CSM2023105', performanceLevel: '', feedback: '' },
-    ],
-    'MAC': [
-      { id: '1C01', name: 'Suresh Reddy', roll: 'MAC2023001', performanceLevel: '', feedback: '' },
-      { id: '1C02', name: 'Kavita Rao', roll: 'MAC2023002', performanceLevel: '', feedback: '' },
-      { id: '1C03', name: 'Vikrant Mehta', roll: 'MAC2023003', performanceLevel: '', feedback: '' },
-    ],
-    'ECE': [
-      { id: '1D01', name: 'Anand Kumar', roll: 'ECE2023001', performanceLevel: '', feedback: '' },
-      { id: '1D02', name: 'Shilpa Iyer', roll: 'ECE2023002', performanceLevel: '', feedback: '' },
-      { id: '1D03', name: 'Rajat Sharma', roll: 'ECE2023003', performanceLevel: '', feedback: '' },
-    ]
+    'CSE': {
+      'R20': [
+        { id: '1A01', name: 'Rahul Kumar', roll: 'CSE2023001', regulation: 'R20', batch: '2023-27', branch: 'CSE', performanceLevel: '', feedback: '' },
+        { id: '1A02', name: 'Priya Sharma', roll: 'CSE2023002', regulation: 'R20', batch: '2023-27', branch: 'CSE', performanceLevel: '', feedback: '' },
+        { id: '1A03', name: 'Amit Singh', roll: 'CSE2023003', regulation: 'R20', batch: '2023-27', branch: 'CSE', performanceLevel: '', feedback: '' }
+      ],
+      'R19': [
+        { id: '1B01', name: 'Arun Verma', roll: 'CSE2023101', regulation: 'R19', batch: '2023-27', branch: 'CSE', performanceLevel: '', feedback: '' },
+        { id: '1B02', name: 'Divya Mishra', roll: 'CSE2023102', regulation: 'R19', batch: '2023-27', branch: 'CSE', performanceLevel: '', feedback: '' }
+      ]
+    },
+    'CSM': {
+      'R20': [
+        { id: '1C01', name: 'Suresh Reddy', roll: 'CSM2023001', regulation: 'R20', batch: '2023-27', branch: 'CSM', performanceLevel: '', feedback: '' },
+        { id: '1C02', name: 'Kavita Rao', roll: 'CSM2023002', regulation: 'R20', batch: '2023-27', branch: 'CSM', performanceLevel: '', feedback: '' }
+      ]
+    },
+    'MECH': {
+      'R20': [
+        { id: '1D01', name: 'Anand Kumar', roll: 'MECH2023001', regulation: 'R20', batch: '2023-27', branch: 'MECH', performanceLevel: '', feedback: '' },
+        { id: '1D02', name: 'Shilpa Iyer', roll: 'MECH2023002', regulation: 'R20', batch: '2023-27', branch: 'MECH', performanceLevel: '', feedback: '' }
+      ]
+    },
+    'CIVIL': {
+      'R20': [
+        { id: '1E01', name: 'Ramesh Kumar', roll: 'CIVIL2023001', regulation: 'R20', batch: '2023-27', branch: 'CIVIL', performanceLevel: '', feedback: '' },
+        { id: '1E02', name: 'Preethi Singh', roll: 'CIVIL2023002', regulation: 'R20', batch: '2023-27', branch: 'CIVIL', performanceLevel: '', feedback: '' }
+      ]
+    },
+    'ECE': {
+      'R20': [
+        { id: '1F01', name: 'Deepak Sharma', roll: 'ECE2023001', regulation: 'R20', batch: '2023-27', branch: 'ECE', performanceLevel: '', feedback: '' },
+        { id: '1F02', name: 'Anjali Patel', roll: 'ECE2023002', regulation: 'R20', batch: '2023-27', branch: 'ECE', performanceLevel: '', feedback: '' }
+      ]
+    }
   },
   '2': {
-    'CSE-B': [
-      { id: '2A01', name: 'Rajesh Khanna', roll: 'CSE2022001', performanceLevel: '', feedback: '' },
-      { id: '2A02', name: 'Pooja Mehta', roll: 'CSE2022002', performanceLevel: '', feedback: '' },
-      { id: '2A03', name: 'Sanjay Kumar', roll: 'CSE2022003', performanceLevel: '', feedback: '' },
-      { id: '2A04', name: 'Deepika Rao', roll: 'CSE2022004', performanceLevel: '', feedback: '' },
-      { id: '2A05', name: 'Vinod Shah', roll: 'CSE2022005', performanceLevel: '', feedback: '' },
-    ],
-    'CSM': [
-      { id: '2B01', name: 'Manoj Patel', roll: 'CSM2022101', performanceLevel: '', feedback: '' },
-      { id: '2B02', name: 'Anjali Reddy', roll: 'CSM2022102', performanceLevel: '', feedback: '' },
-      { id: '2B03', name: 'Rohit Dubey', roll: 'CSM2022103', performanceLevel: '', feedback: '' },
-      { id: '2B04', name: 'Shweta Nair', roll: 'CSM2022104', performanceLevel: '', feedback: '' },
-      { id: '2B05', name: 'Rahul Agarwal', roll: 'CSM2022105', performanceLevel: '', feedback: '' },
-    ],
-    'MAC': [
-      { id: '2C01', name: 'Prashant Jain', roll: 'MAC2022001', performanceLevel: '', feedback: '' },
-      { id: '2C02', name: 'Nisha Verma', roll: 'MAC2022002', performanceLevel: '', feedback: '' },
-      { id: '2C03', name: 'Vipul Singh', roll: 'MAC2022003', performanceLevel: '', feedback: '' },
-    ],
-    'ECE': [
-      { id: '2D01', name: 'Smita Kapoor', roll: 'ECE2022001', performanceLevel: '', feedback: '' },
-      { id: '2D02', name: 'Aditya Gupta', roll: 'ECE2022002', performanceLevel: '', feedback: '' },
-      { id: '2D03', name: 'Komal Sharma', roll: 'ECE2022003', performanceLevel: '', feedback: '' },
-    ]
+    'CSE': {
+      'R20': [
+        { id: '2A01', name: 'Rajesh Khanna', roll: 'CSE2022001', regulation: 'R20', batch: '2022-26', branch: 'CSE', performanceLevel: '', feedback: '' },
+        { id: '2A02', name: 'Pooja Mehta', roll: 'CSE2022002', regulation: 'R20', batch: '2022-26', branch: 'CSE', performanceLevel: '', feedback: '' }
+      ]
+    },
+    'CSM': {
+      'R20': [
+        { id: '2B01', name: 'Manoj Patel', roll: 'CSM2022101', regulation: 'R20', batch: '2022-26', branch: 'CSM', performanceLevel: '', feedback: '' },
+        { id: '2B02', name: 'Anjali Reddy', roll: 'CSM2022102', regulation: 'R20', batch: '2022-26', branch: 'CSM', performanceLevel: '', feedback: '' }
+      ]
+    },
+    'MECH': {
+      'R20': [
+        { id: '2D01', name: 'Smita Kapoor', roll: 'MECH2022001', regulation: 'R20', batch: '2022-26', branch: 'MECH', performanceLevel: '', feedback: '' },
+        { id: '2D02', name: 'Aditya Gupta', roll: 'MECH2022002', regulation: 'R20', batch: '2022-26', branch: 'MECH', performanceLevel: '', feedback: '' }
+      ]
+    }
   },
   '3': {
-    'CSE-B': [
-      { id: '3A01', name: 'Vivek Maran', roll: 'CSE2021001', performanceLevel: '', feedback: '' },
-      { id: '3A02', name: 'Sneha Saha', roll: 'CSE2021002', performanceLevel: '', feedback: '' },
-      { id: '3A03', name: 'Raj Malhotra', roll: 'CSE2021003', performanceLevel: '', feedback: '' },
-      { id: '3A04', name: 'Ananya Das', roll: 'CSE2021004', performanceLevel: '', feedback: '' },
-      { id: '3A05', name: 'Suresh Pillai', roll: 'CSE2021005', performanceLevel: '', feedback: '' },
-    ],
-    'CSM': [
-      { id: '3B01', name: 'Rakesh Singh', roll: 'CSM2021101', performanceLevel: '', feedback: '' },
-      { id: '3B02', name: 'Kavya Nair', roll: 'CSM2021102', performanceLevel: '', feedback: '' },
-      { id: '3B03', name: 'Prakash Iyer', roll: 'CSM2021103', performanceLevel: '', feedback: '' },
-      { id: '3B04', name: 'Meenakshi Das', roll: 'CSM2021104', performanceLevel: '', feedback: '' },
-      { id: '3B05', name: 'Rajeev Kumar', roll: 'CSM2021105', performanceLevel: '', feedback: '' },
-    ],
-    'MAC': [
-      { id: '3C01', name: 'Aman Khanna', roll: 'MAC2021001', performanceLevel: '', feedback: '' },
-      { id: '3C02', name: 'Ritika Patel', roll: 'MAC2021002', performanceLevel: '', feedback: '' },
-      { id: '3C03', name: 'Naveen Reddy', roll: 'MAC2021003', performanceLevel: '', feedback: '' },
-    ],
-    'ECE': [
-      { id: '3D01', name: 'Sangeeta Roy', roll: 'ECE2021001', performanceLevel: '', feedback: '' },
-      { id: '3D02', name: 'Rohan Kapoor', roll: 'ECE2021002', performanceLevel: '', feedback: '' },
-      { id: '3D03', name: 'Sheetal Verma', roll: 'ECE2021003', performanceLevel: '', feedback: '' },
-    ]
-  },
-  '4': {
-    'CSE-B': [
-      { id: '4A01', name: 'Ajay Reddy', roll: 'CSE2020001', performanceLevel: '', feedback: '' },
-      { id: '4A02', name: 'Suman Verma', roll: 'CSE2020002', performanceLevel: '', feedback: '' },
-      { id: '4A03', name: 'Deepak Gupta', roll: 'CSE2020003', performanceLevel: '', feedback: '' },
-      { id: '4A04', name: 'Aarti Singh', roll: 'CSE2020004', performanceLevel: '', feedback: '' },
-      { id: '4A05', name: 'Vijay Sharma', roll: 'CSE2020005', performanceLevel: '', feedback: '' },
-    ],
-    'CSM': [
-      { id: '4B01', name: 'Mohan Lal', roll: 'CSM2020101', performanceLevel: '', feedback: '' },
-      { id: '4B02', name: 'Riya Choudhury', roll: 'CSM2020102', performanceLevel: '', feedback: '' },
-      { id: '4B03', name: 'Siddharth Roy', roll: 'CSM2020103', performanceLevel: '', feedback: '' },
-      { id: '4B04', name: 'Aishwarya Patel', roll: 'CSM2020104', performanceLevel: '', feedback: '' },
-      { id: '4B05', name: 'Kunal Sharma', roll: 'CSM2020105', performanceLevel: '', feedback: '' },
-    ],
-    'MAC': [
-      { id: '4C01', name: 'Vikas Malhotra', roll: 'MAC2020001', performanceLevel: '', feedback: '' },
-      { id: '4C02', name: 'Tanya Saxena', roll: 'MAC2020002', performanceLevel: '', feedback: '' },
-      { id: '4C03', name: 'Farhan Ahmed', roll: 'MAC2020003', performanceLevel: '', feedback: '' },
-    ],
-    'ECE': [
-      { id: '4D01', name: 'Jatin Mehra', roll: 'ECE2020001', performanceLevel: '', feedback: '' },
-      { id: '4D02', name: 'Priyanka Gupta', roll: 'ECE2020002', performanceLevel: '', feedback: '' },
-      { id: '4D03', name: 'Mohit Sharma', roll: 'ECE2020003', performanceLevel: '', feedback: '' },
-    ]
+    'CSE': {
+      'R19': [
+        { id: '3A01', name: 'Vivek Maran', roll: 'CSE2021001', regulation: 'R19', batch: '2021-25', branch: 'CSE', performanceLevel: '', feedback: '' },
+        { id: '3A02', name: 'Sneha Saha', roll: 'CSE2021002', regulation: 'R19', batch: '2021-25', branch: 'CSE', performanceLevel: '', feedback: '' }
+      ]
+    },
+    'CSM': {
+      'R19': [
+        { id: '3B01', name: 'Rakesh Singh', roll: 'CSM2021101', regulation: 'R19', batch: '2021-25', branch: 'CSM', performanceLevel: '', feedback: '' },
+        { id: '3B02', name: 'Kavya Nair', roll: 'CSM2021102', regulation: 'R19', batch: '2021-25', branch: 'CSM', performanceLevel: '', feedback: '' }
+      ]
+    }
   }
 };
+
+// Available regulations
+const regulations = ['R20', 'R19', 'R18'];
 
 // Mapping for faculty usernames to their details
 const facultyDetails: FacultyDetailsMap = {
@@ -136,22 +106,12 @@ const facultyDetails: FacultyDetailsMap = {
 };
 
 const years = ['1', '2', '3', '4'];
-const branches = ['CSE-B', 'CSM', 'MAC', 'ECE'];
-
-interface SessionRecord {
-  id: string;
-  date: string;
-  year: string;
-  branch: string;
-  subject: string;
-  testConducted: string;
-  studentsAppeared: string[];
-}
 
 const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
   const [activeTab, setActiveTab] = useState<string>("sessions");
   const [selectedYear, setSelectedYear] = useState<string>('');
   const [selectedBranch, setSelectedBranch] = useState<string>('');
+  const [selectedRegulation, setSelectedRegulation] = useState<string>('');
   const [students, setStudents] = useState<Student[]>([]);
   const [subject, setSubject] = useState<string>('');
   const [testConducted, setTestConducted] = useState<string>('');
@@ -164,17 +124,22 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
 
   const handleYearChange = (year: string) => {
     setSelectedYear(year);
-    if (selectedBranch && mockStudentsData[year]) {
-      setStudents(mockStudentsData[year][selectedBranch] || []);
-    } else {
-      setStudents([]);
-    }
+    setSelectedBranch('');
+    setSelectedRegulation('');
+    setStudents([]);
   };
 
   const handleBranchChange = (branch: string) => {
     setSelectedBranch(branch);
-    if (selectedYear && mockStudentsData[selectedYear]) {
-      setStudents(mockStudentsData[selectedYear][branch] || []);
+    setSelectedRegulation('');
+    setStudents([]);
+  };
+
+  const handleRegulationChange = (regulation: string) => {
+    setSelectedRegulation(regulation);
+    
+    if (selectedYear && selectedBranch && mockStudentsData[selectedYear]?.[selectedBranch]?.[regulation]) {
+      setStudents(mockStudentsData[selectedYear][selectedBranch][regulation] || []);
     } else {
       setStudents([]);
     }
@@ -209,8 +174,8 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
   };
 
   const handleSaveSession = () => {
-    if (!selectedYear || !selectedBranch || !subject) {
-      toast.error("Please select year, branch, and subject before saving");
+    if (!selectedYear || !selectedBranch || !selectedRegulation || !subject) {
+      toast.error("Please select year, branch, regulation, and subject before saving");
       return;
     }
 
@@ -219,23 +184,24 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
       date: new Date().toISOString().split('T')[0],
       year: selectedYear,
       branch: selectedBranch,
+      regulation: selectedRegulation,
       subject: subject,
       testConducted: testConducted,
       studentsAppeared: selectedStudents,
     };
 
     setSessionRecords([...sessionRecords, newSession]);
-    toast.success(`Session record saved for ${subject} - Year ${selectedYear}, Branch ${selectedBranch}`);
+    toast.success(`Session record saved for ${subject} - Year ${selectedYear}, Branch ${selectedBranch}, Regulation ${selectedRegulation}`);
   };
 
   const handleSaveEvaluations = () => {
     // In a real app, this would save to backend
-    toast.success(`Evaluations saved for Year ${selectedYear}, Branch ${selectedBranch}`);
+    toast.success(`Evaluations saved for Year ${selectedYear}, Branch ${selectedBranch}, Regulation ${selectedRegulation}`);
   };
 
   const handleDownloadReport = () => {
     // In a real app, this would generate and download a report
-    toast.success(`Report generated for Year ${selectedYear}, Branch ${selectedBranch}`);
+    toast.success(`Report generated for Year ${selectedYear}, Branch ${selectedBranch}, Regulation ${selectedRegulation}`);
   };
 
   const handleFakeDataEntry = () => {
@@ -290,7 +256,7 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
           <div className="glass-card p-4 rounded-lg">
             <h3 className="font-medium mb-4 text-lg">Select Class</h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <div>
                 <Label htmlFor="year-select">Year</Label>
                 <Select 
@@ -323,9 +289,29 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
                     <SelectValue placeholder="Select branch" />
                   </SelectTrigger>
                   <SelectContent>
-                    {branches.map((branch) => (
+                    {branchOptions.map((branch) => (
                       <SelectItem key={branch} value={branch}>
                         {branch}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <Label htmlFor="regulation-select">Regulation</Label>
+                <Select 
+                  value={selectedRegulation} 
+                  onValueChange={handleRegulationChange}
+                  disabled={!selectedYear || !selectedBranch}
+                >
+                  <SelectTrigger id="regulation-select">
+                    <SelectValue placeholder="Select regulation" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {regulations.map((regulation) => (
+                      <SelectItem key={regulation} value={regulation}>
+                        {regulation}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -334,7 +320,7 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
             </div>
           </div>
 
-          {selectedYear && selectedBranch && (
+          {selectedYear && selectedBranch && selectedRegulation && (
             <Card className="shadow-md">
               <CardHeader>
                 <CardTitle>Session Details</CardTitle>
@@ -425,11 +411,11 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
             />
           )}
 
-          {selectedYear && selectedBranch && students.length > 0 ? (
+          {selectedYear && selectedBranch && selectedRegulation && students.length > 0 ? (
             <div className="glass-card p-4 rounded-lg">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-medium text-lg">
-                  Student Evaluations - Year {selectedYear}, Branch {selectedBranch}
+                  Student Evaluations - Year {selectedYear}, Branch {selectedBranch}, Regulation {selectedRegulation}
                 </h3>
                 <div className="flex gap-2">
                   <Button 
@@ -494,16 +480,16 @@ const FacultyDashboard = ({ facultyUsername }: FacultyDashboardProps) => {
                 </TableBody>
               </Table>
             </div>
-          ) : selectedYear && selectedBranch ? (
+          ) : selectedYear && selectedBranch && selectedRegulation ? (
             <div className="text-center py-8">
-              <p className="text-muted-foreground">No students found for the selected year and branch.</p>
+              <p className="text-muted-foreground">No students found for the selected year, branch, and regulation.</p>
             </div>
           ) : (
             <div className="text-center py-8 glass-card rounded-lg">
               <Filter className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-              <p className="text-lg font-medium mb-2">Select Year and Branch</p>
+              <p className="text-lg font-medium mb-2">Select Year, Branch, and Regulation</p>
               <p className="text-muted-foreground">
-                Please select a year and branch to view session details and evaluate students.
+                Please select all options to view session details and evaluate students.
               </p>
             </div>
           )}

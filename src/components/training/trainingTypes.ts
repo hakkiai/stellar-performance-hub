@@ -3,18 +3,25 @@
 export interface Student {
   id: string;
   name: string;
-  roll: string;
+  roll: string; // hallticket_no
+  regulation: string;
+  batch: string;
+  branch: string;
   performanceLevel: string;
   feedback: string;
 }
 
 // Define types for the nested data structure
-export interface SectionData {
-  [section: string]: Student[];
+export interface RegulationData {
+  [regulation: string]: Student[];
+}
+
+export interface BranchData {
+  [branch: string]: RegulationData;
 }
 
 export interface YearData {
-  [year: string]: SectionData;
+  [year: string]: BranchData;
 }
 
 // Mapping for faculty usernames to their details
@@ -40,7 +47,20 @@ export interface SessionRecord {
   date: string;
   year: string;
   branch: string;
+  regulation: string;
   subject: string;
   testConducted: string;
   studentsAppeared: string[];
 }
+
+// New interface for CSV Student Data
+export interface CSVStudentData {
+  hallticket_no: string;
+  regulation: string;
+  batch: string;
+  branch: string;
+  student_name: string;
+}
+
+// Branch options
+export const branchOptions = ["CSE", "CSM", "MECH", "CIVIL", "ECE"];

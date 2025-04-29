@@ -38,15 +38,28 @@ const AnalyticsView = ({ facultyUsername, sessionRecords, students }: AnalyticsV
     { name: 'Bad', count: students.filter(s => s.performanceLevel === 'bad').length }
   ].filter(item => item.count > 0);
 
-  // Sessions per branch data
-  const sessionsByBranch = sessionRecords.reduce((acc, session) => {
-    const key = `${session.year}-${session.branch}`;
+  // Sessions per branch and regulation data
+  const sessionsByBranchAndRegulation = sessionRecords.reduce((acc, session) => {
+    const key = `${session.branch}-${session.regulation}`;
     acc[key] = (acc[key] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
-  const branchSessionData = Object.entries(sessionsByBranch).map(([key, count]) => ({
+  const branchRegulationSessionData = Object.entries(sessionsByBranchAndRegulation).map(([key, count]) => ({
     name: key,
+    count
+  }));
+
+  // Sessions per year data
+  const sessionsByYear = sessionRecords.reduce((acc, session) => {
+    acc[session.year] = (acc[session.year] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  const yearSessionData = Object.entries(sessionsByYear).map(([year, count]) => ({
+    name: year === '1' ? '1st Year' : 
+          year === '2' ? '2nd Year' : 
+          year === '3' ? '3rd Year' : '4th Year',
     count
   }));
 
@@ -62,7 +75,8 @@ const AnalyticsView = ({ facultyUsername, sessionRecords, students }: AnalyticsV
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="performance">Student Performance Distribution</SelectItem>
-          <SelectItem value="sessions">Sessions by Year & Branch</SelectItem>
+          <SelectItem value="sessions">Sessions by Branch & Regulation</SelectItem>
+          <SelectItem value="years">Sessions by Year</SelectItem>
           <SelectItem value="attendance">Student Attendance</SelectItem>
         </SelectContent>
       </Select>
@@ -114,17 +128,17 @@ const AnalyticsView = ({ facultyUsername, sessionRecords, students }: AnalyticsV
         </Card>
       )}
 
-      {selectedMetric === "sessions" && branchSessionData.length > 0 && (
+      {selectedMetric === "sessions" && branchRegulationSessionData.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Sessions by Year & Branch</CardTitle>
-            <CardDescription>Number of sessions conducted per year and branch</CardDescription>
+            <CardTitle>Sessions by Branch & Regulation</CardTitle>
+            <CardDescription>Number of sessions conducted per branch and regulation</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                  data={branchSessionData}
+                  data={branchRegulationSessionData}
                   margin={{
                     top: 5,
                     right: 30,
@@ -145,6 +159,37 @@ const AnalyticsView = ({ facultyUsername, sessionRecords, students }: AnalyticsV
         </Card>
       )}
 
+      {selectedMetric === "years" && yearSessionData.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Sessions by Year</CardTitle>
+            <CardDescription>Number of sessions conducted per year</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={yearSessionData}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="count" name="Sessions" fill="#00C49F" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {selectedMetric === "attendance" && (
         <Card>
           <CardHeader>
@@ -158,7 +203,9 @@ const AnalyticsView = ({ facultyUsername, sessionRecords, students }: AnalyticsV
                   <BarChart
                     data={sessionRecords.map(record => ({
                       date: record.date,
-                      attendance: ((record.studentsAppeared.length / students.length) * 100) || 0
+                      branch: record.branch,
+                      regulation: record.regulation,
+                      attendance: ((record.studentsAppeared.length / (students.length || 10)) * 100)
                     }))}
                     margin={{
                       top: 5,
