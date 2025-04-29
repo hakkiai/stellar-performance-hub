@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,7 +8,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Upload, Download, Database } from 'lucide-react';
 import { toast } from "sonner";
 import { CSVStudentData } from '../training/trainingTypes';
-import CSVEditor from '../CSVEditor';
 
 const StudentDataImport = () => {
   const [csvData, setCsvData] = useState<CSVStudentData[]>([]);
@@ -110,6 +110,20 @@ const StudentDataImport = () => {
     toast.success("SQL data imported successfully");
   };
 
+  // Convert csvData to format expected by CSVTable
+  const prepareCSVForDisplay = () => {
+    if (csvData.length === 0) return { headers: [], rows: [] };
+    
+    const headers = Object.keys(csvData[0]);
+    const rows = csvData.map(item => {
+      return headers.map(header => item[header as keyof CSVStudentData] || '');
+    });
+    
+    return { headers, rows };
+  };
+
+  const csvDisplay = prepareCSVForDisplay();
+
   return (
     <div className="space-y-6">
       <Tabs defaultValue="csv" className="w-full">
@@ -148,10 +162,34 @@ const StudentDataImport = () => {
                 <div className="pt-4 border-t">
                   <h3 className="text-md font-medium mb-2">CSV Preview</h3>
                   <div className="max-h-80 overflow-auto border rounded-md">
-                    <CSVEditor 
-                      data={csvData} 
-                      onChange={(newData) => setCsvData(newData as CSVStudentData[])}
-                    />
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          {csvDisplay.headers.map((header, index) => (
+                            <th 
+                              key={index}
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                              {header}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {csvDisplay.rows.map((row, rowIndex) => (
+                          <tr key={rowIndex}>
+                            {row.map((cell, cellIndex) => (
+                              <td 
+                                key={cellIndex}
+                                className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                              >
+                                {cell}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               )}
